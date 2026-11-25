@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --color-accent: #1E4D8C;   /* primary interactive color */
+    --color-accent-hover: #163A6B;
+    --sidebar-width: 220px;
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface-bg text-ink-primary text-md leading-relaxed;
+  }
+
+  /* Thin scrollbars on Chrome/Edge */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+  /* Focus ring */
+  *:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Table defaults */
+  table { border-collapse: collapse; }
+  th { text-align: left; }
+}
+
+@layer components {
+  /* ── Buttons ───────────────────────────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center gap-1.5 rounded px-3 py-1.5 text-sm font-medium
+           transition-colors duration-150 cursor-pointer border border-surface-border
+           bg-white text-ink-primary hover:bg-surface-bg disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn border-transparent text-white;
+    background-color: var(--color-accent);
+  }
+  .btn-primary:hover:not(:disabled) { background-color: var(--color-accent-hover); }
+  .btn-danger  { @apply btn border-transparent bg-bad text-white hover:bg-red-800; }
+  .btn-ghost   { @apply btn border-transparent bg-transparent hover:bg-surface-bg; }
+  .btn-sm      { @apply text-xs px-2.5 py-1; }
+  .btn-lg      { @apply text-base px-4 py-2; }
+
+  /* ── Form inputs ───────────────────────────────────────────────────────── */
+  .input {
+    @apply w-full rounded border border-surface-border bg-white px-3 py-1.5 text-sm
+           text-ink-primary placeholder:text-ink-secondary/60 transition-colors
+           focus:border-blue-400 focus:ring-0 focus:outline-none;
+  }
+  .input-error { @apply border-bad/60 bg-bad/5; }
+  .label { @apply block text-xs font-medium text-ink-secondary mb-1; }
+
+  /* ── Cards ─────────────────────────────────────────────────────────────── */
+  .card { @apply bg-white border border-surface-border rounded-lg shadow-card; }
+  .card-p { @apply card p-5; }
+
+  /* ── Page heading ──────────────────────────────────────────────────────── */
+  .page-title  { @apply text-2xl font-semibold text-ink-primary tracking-tight; }
+  .page-sub    { @apply text-sm text-ink-secondary mt-0.5; }
+
+  /* ── Status pills ──────────────────────────────────────────────────────── */
+  .pill        { @apply inline-flex items-center rounded px-1.5 py-0.5 text-xs font-semibold; }
+  .pill-pass   { @apply pill bg-ok-light text-ok; }
+  .pill-fail   { @apply pill bg-bad-light text-bad; }
+  .pill-inc    { @apply pill bg-warn-light text-warn; }
+  .pill-pend   { @apply pill bg-surface-bg text-ink-secondary border border-surface-border; }
+  .pill-grade  { @apply pill bg-navy-50 text-navy-800; }
+
+  /* ── Table styles ──────────────────────────────────────────────────────── */
+  .tbl-wrap    { @apply overflow-x-auto rounded-lg border border-surface-border; }
+  .tbl         { @apply w-full text-sm; }
+  .tbl thead th {
+    @apply px-4 py-2.5 text-xs font-semibold text-ink-secondary uppercase tracking-wide
+           bg-surface-bg border-b border-surface-border whitespace-nowrap;
+  }
+  .tbl tbody td { @apply px-4 py-2.5 border-b border-surface-border align-middle; }
+  .tbl tbody tr:last-child td { @apply border-0; }
+  .tbl tbody tr { @apply hover:bg-surface-bg/70 transition-colors; }
+
+  /* ── Sidebar nav items ──────────────────────────────────────────────────── */
+  .nav-item {
+    @apply flex items-center gap-2.5 px-3 py-2 rounded text-sm text-ink-secondary
+           hover:bg-navy-50 hover:text-navy-900 transition-colors cursor-pointer;
+  }
+  .nav-item.active { @apply bg-navy-50 text-navy-900 font-medium; }
+
+  /* ── Stat cards ─────────────────────────────────────────────────────────── */
+  .stat-card {
+    @apply card p-4 flex flex-col gap-1;
+  }
+  .stat-value { @apply text-2xl font-bold text-ink-primary leading-none; }
+  .stat-label { @apply text-xs text-ink-secondary; }
+}

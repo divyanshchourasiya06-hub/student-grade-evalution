@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acadex &middot; Academic Evaluation &amp; Student Merit System</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2312355B'/%3E%3Cpath d='M16 6L6 11L16 16L26 11L16 6Z' fill='%23FFFFFF'/%3E%3Cpath d='M9 14.5V20.5C9 23.5 16 26 16 26C16 26 23 23.5 23 20.5V14.5L16 18L9 14.5Z' fill='%23C68A1B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Immediate Theme Initialization to Prevent Flash of Wrong Theme -->
+<script>
+  (function() {
+    var stored = localStorage.getItem("acadex_theme") || "light";
+    var dark = stored === "dark" || (stored === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  })();
+</script>
+
+<style>
+/* ================= THEME TOKENS ================= */
+:root {
+  /* Light Theme (Default) */
+  --bg: #F7F8FA;
+  --sidebar-bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F3F6;
+  --surface-elevated: #FFFFFF;
+  --border: #E5E8ED;
+  --border-focus: #12355B;
+  --ink-primary: #202733;
+  --ink-secondary: #687386;
+  --ink-muted: #8E99A8;
+  --navy: #12355B;
+  --navy-hover: #0E2A49;
+  --navy-light: #EBF1F7;
+  --navy-border: #D1DDEB;
+  --gold: #C68A1B;
+  --gold-bg: #FEF7EC;
+  --gold-border: #F7DCA4;
+  --ok: #17803D;
+  --ok-bg: #E4F5EA;
+  --ok-border: #C3E6D0;
+  --bad: #B42318;
+  --bad-bg: #FDECEB;
+  --bad-border: #F8CAC6;
+  --warn: #9A5B00;
+  --warn-bg: #FFF3DC;
+  --warn-border: #FBE2B2;
+  --sidebar-w: 244px;
+  --radius: 8px;
+  --shadow-sm: 0 1px 2px 0 rgba(16, 24, 40, 0.04);
+  --shadow: 0 1px 3px 0 rgba(16, 24, 40, 0.08), 0 1px 2px -1px rgba(16, 24, 40, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --dist-track: #EBF0F5;
+}
+
+/* Dark Theme Overrides */
+html[data-theme="dark"] {
+  --bg: #111318;
+  --sidebar-bg: #171A21;
+  --surface: #1B1F27;
+  --surface-alt: #222733;
+  --surface-elevated: #262C3A;
+  --border: #303642;
+  --border-focus: #5A85B8;
+  --ink-primary: #E8EBF0;
+  --ink-secondary: #A0A8B7;
+  --ink-muted: #6B7688;
+  --navy: #5A85B8;
+  --navy-hover: #719BC9;
+  --navy-light: #1E2738;
+  --navy-border: #30405C;
+  --gold: #D49E35;
+  --gold-bg: #2C2314;
+  --gold-border: #523F1F;
+  --ok: #34D399;
+  --ok-bg: #132B20;
+  --ok-border: #1F4D38;
+  --bad: #F87171;
+  --bad-bg: #301719;
+  --bad-border: #572528;
+  --warn: #FBBF24;
+  --warn-bg: #2D2413;
+  --warn-border: #54411C;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+  --dist-track: #262C38;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
+body {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-primary);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 25;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.sidebar-header {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.brand-box {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.brand-logo-svg {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+.brand-tagline {
+  font-size: 10.5px;
+  color: var(--ink-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 10px 8px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-group-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--ink-muted);
+  padding: 10px 10px 4px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7.5px 12px;
+  border-radius: var(--radius);
+  color: var(--ink-secondary);
+  font-weight: 500;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+.nav-link:hover {
+  background: var(--surface-alt);
+  color: var(--ink-primary);
+}
+.nav-link.active {
+  background: var(--navy-light);
+  color: var(--navy);
+  font-weight: 600;
+}
+.nav-link svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  stroke-width: 2;
+}
+
+.sidebar-footer {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.role-switch-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.role-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--navy);
+  color: #fff;
+}
+.role-select {
+  font-size: 11.5px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-primary);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Main Area */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+.topbar {
+  height: 54px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-heading {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin: 0;
+}
+.meta-chip {
+  font-size: 11.5px;
+  color: var(--ink-secondary);
+  background: var(--surface-alt);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  font-weight: 500;
+}
+.pub-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.pub-badge.published {
+  background: var(--ok-bg);
+  color: var(--ok);
+  border: 1px solid var(--ok-border);
+}
+.pub-badge.draft {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border: 1px solid var(--warn-border);
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Theme Switcher Segmented Control */
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2px;
+  gap: 1px;
+}
+.theme-btn {
+  background: transparent;
+  border: none;
+  padding: 4px 7px;
+  border-radius: calc(var(--radius) - 2px);
+  cursor: pointer;
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.theme-btn:hover {
+  color: var(--ink-primary);
+}
+.theme-btn.active {
+  background: var(--surface);
+  color: var(--navy);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+.theme-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2;
+}
+
+.content-pane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+.view-section { display: none; }
+.view-section.active { display: block; }
+
+/* Cards & Components */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
+  margin-bottom: 18px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.card-title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+.card-desc {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+/* Stat Metric Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.metric-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.metric-box .label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--ink-muted);
+}
+.metric-box .value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-top: 3px;
+  font-family: "IBM Plex Mono", monospace;
+}
+.metric-box .sub {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  margin-top: 3px;
+}
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+table.app-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+table.app-table th {
+  background: var(--surface-alt);
+  color: var(--ink-secondary);
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  user-select: none;
+}
+table.app-table th.sortable {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+table.app-table th.sortable:hover {
+  background: var(--surface-elevated);
+  color: var(--navy);
+}
+table.app-table th .sort-arrow {
+  margin-left: 4px;
+  opacity: 0.4;
+  font-size: 10px;
+}
+table.app-table th.sort-asc .sort-arrow,
+table.app-table th.sort-desc .sort-arrow {
+  opacity: 1;
+  color: var(--navy);
+}
+table.app-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+table.app-table tbody tr:last-child td { border-bottom: none; }
+table.app-table tbody tr:hover { background: var(--surface-alt); }
+table.app-table td.mono {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+/* Pagination Controls */
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-alt);
+  font-size: 12px;
+  color: var(--ink-secondary);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.page-btn {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink-primary);
+  cursor: pointer;
+  font-size: 11.5px;
+}
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.badge-pass { background: var(--ok-bg); color: var(--ok); border: 1px solid var(--ok-border); }
+.badge-fail { background: var(--bad-bg); color: var(--bad); border: 1px solid var(--bad-border); }
+.badge-inc  { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-border); }
+.badge-grade {
+  background: var(--navy-light);
+  color: var(--navy);
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  border: 1px solid var(--navy-border);
+}
+.badge-grade.fail { background: var(--bad-bg); color: var(--bad); border-color: var(--bad-border); }
+
+/* Buttons & Inputs */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6.5px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  font-family: inherit;
+}
+.btn:hover:not(:disabled) {
+  background: var(--surface-alt);
+  border-color: #D1D5DB;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+html[data-theme="dark"] .btn-primary {
+  background: #2D5B88;
+  color: #FFFFFF;
+  border-color: #386A9E;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--navy-hover);
+  border-color: var(--navy-hover);
+}
+.btn-gold {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+.btn-gold:hover:not(:disabled) {
+  background: #AF7614;
+}
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 11.5px;
+}
+.btn-danger {
+  color: var(--bad);
+  background: var(--surface);
+  border-color: var(--border);
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--bad-bg);
+  border-color: var(--bad-border);
+}
+
+.input, select {
+  font-family: inherit;
+  font-size: 12.5px;
+  color: var(--ink-primary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6.5px 9px;
+  transition: border-color 0.15s ease;
+  width: 100%;
+}
+.input:focus, select:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px var(--navy-light);
+}
+.input-sm {
+  padding: 4px 7px;
+  font-size: 12px;
+}
+.input.error {
+  border-color: var(--bad);
+  background: var(--bad-bg);
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.modal-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-head h3 { margin: 0; font-size: 14.5px; font-weight: 600; color: var(--ink-primary); }
+.modal-body {
+  padding: 18px;
+  overflow-y: auto;
+}
+.modal-foot {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-alt);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999;
+  pointer-events: none;
+}
+.toast {
+  background: var(--surface-elevated);
+  color: var(--ink-primary);
+  border: 1px solid var(--border);
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  font-size: 12.5px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  animation: toastIn 0.2s ease forwards;
+}
+.toast.success { background: var(--ok-bg); color: var(--ok); border-color: var(--ok-border); }
+.toast.error { background: var(--bad-bg); color: var(--bad); border-color: var(--bad-border); }
+.toast.info { background: var(--navy-light); color: var(--navy); border-color: var(--navy-border); }
+.toast.warning { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-border); }
+@keyframes toastIn {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Distribution Bars */
+.dist-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 36px 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 12.5px;
+}
+.dist-track {
+  height: 9px;
+  background: var(--dist-track);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.dist-fill {
+  height: 100%;
+  background: var(--navy);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+.dist-fill.f { background: var(--bad); }
+
+/* Notice Banner */
+.notice {
+  font-size: 12px;
+  color: var(--ink-secondary);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* Student Portal Card */
+.student-scorecard {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.student-scorecard-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+html[data-theme="dark"] .student-scorecard-header {
+  background: #1E2738;
+  color: var(--ink-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.1);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .mobile-menu-btn { display: inline-flex !important; }
+}
+.mobile-menu-btn { display: none; }
+</style>
+</head>
+<body>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-box">
+        <!-- Minimal Original Monogram Crest -->
+        <svg class="brand-logo-svg" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="6" fill="#12355B"/>
+          <path d="M16 6L6 11L16 16L26 11L16 6Z" fill="#FFFFFF"/>
+          <path d="M9 14.5V20.5C9 23.5 16 26 16 26C16 26 23 23.5 23 20.5V14.5L16 18L9 14.5Z" fill="#C68A1B"/>
+          <circle cx="16" cy="11" r="1.5" fill="#12355B"/>
+        </svg>
+        <div>
+          <div class="brand-name">Acadex</div>
+          <div class="brand-tagline">Academic Evaluation 2.0</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-title role-group-admin-teacher">Management</div>
+      <button class="nav-link active role-group-admin-teacher" data-view="dashboard">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-link role-group-admin" data-view="students">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        Students
+      </button>
+      <button class="nav-link role-group-admin-teacher" data-view="subjects">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Subjects
+      </button>
+      <button class="nav-link role-group-admin-teacher" data-view="marks">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        Marks Entry
+      </button>
+      <button class="nav-link role-group-admin-teacher" data-view="results">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Results &amp; Merit
+      </button>
+
+      <!-- Student Portal Specific Link -->
+      <div class="nav-group-title role-group-student" style="display:none;">Student Portal</div>
+      <button class="nav-link role-group-student" data-view="student-portal" style="display:none;">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        My Academic Scorecard
+      </button>
+
+      <div class="nav-group-title role-group-admin">Governance &amp; Audit</div>
+      <button class="nav-link role-group-admin" data-view="analytics">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+        Class Analytics
+      </button>
+      <button class="nav-link role-group-admin" data-view="grading">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        Grading Ordinance
+      </button>
+      <button class="nav-link role-group-admin" data-view="audit">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Audit Log
+      </button>
+      <button class="nav-link role-group-admin" data-view="reports">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Reports &amp; Backup
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="role-switch-box">
+        <span class="role-badge" id="roleBadge">ADMIN</span>
+        <select class="role-select" id="roleSelector" title="Switch User Role">
+          <option value="ADMIN">Admin View</option>
+          <option value="TEACHER">Teacher View</option>
+          <option value="STUDENT">Student View</option>
+        </select>
+      </div>
+      <div style="font-size: 11px; color: var(--ink-muted);">MITS Gwalior &middot; Acadex 2.0</div>
+    </div>
+  </aside>
+
+  <!-- Main Body -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn btn-sm mobile-menu-btn" id="mobileMenuBtn">Menu</button>
+        <h1 class="page-heading" id="pageHeadingTitle">Academic Dashboard</h1>
+        <span class="meta-chip">Sem I &middot; 2024-25 &middot; CSBS</span>
+        <span class="pub-badge draft" id="topPublicationBadge">Evaluation In Progress</span>
+      </div>
+      <div class="topbar-right">
+        <!-- Accessible 3-Way Theme Switcher (Light / Dark / System) -->
+        <div class="theme-switcher" role="radiogroup" aria-label="Theme Mode Selection">
+          <button class="theme-btn" data-theme-val="light" title="Light Mode" role="radio" aria-checked="true">
+            <!-- Lucide Sun Icon -->
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41m14.14-14.14l-1.41 1.41"/></svg>
+          </button>
+          <button class="theme-btn" data-theme-val="dark" title="Dark Mode" role="radio" aria-checked="false">
+            <!-- Lucide Moon Icon -->
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          </button>
+          <button class="theme-btn" data-theme-val="system" title="System Default" role="radio" aria-checked="false">
+            <!-- Lucide Monitor Icon -->
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8m-4-4v4"/></svg>
+          </button>
+        </div>
+
+        <button class="btn btn-sm role-group-admin" id="btnTogglePublication">Publish Results</button>
+        <button class="btn btn-sm btn-primary" id="btnGlobalReport">Export Transcripts (PDF)</button>
+      </div>
+    </header>
+
+    <main class="content-pane">
+
+      <!-- ================= 1. DASHBOARD VIEW ================= -->
+      <section class="view-section active" id="view-dashboard">
+        <div class="metrics-grid" id="dashMetrics"></div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2 class="card-title">Grade Distribution</h2>
+                <p class="card-desc">Breakdown across 10-point institutional scale</p>
+              </div>
+            </div>
+            <div id="dashGradeDist"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2 class="card-title">Subject Average Breakdown</h2>
+                <p class="card-desc">Average % scored per registered subject</p>
+              </div>
+            </div>
+            <div id="dashSubjectDist"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Class Leaderboard (Top Rankers)</h2>
+              <p class="card-desc">Highest SGPA followed by aggregate marks</p>
+            </div>
+            <button class="btn btn-sm" onclick="acadex.navTo('results')">View All Rankings &rarr;</button>
+          </div>
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th style="width: 55px;">Rank</th>
+                  <th>Student Name</th>
+                  <th>Enrollment</th>
+                  <th>Section</th>
+                  <th>Total Marks</th>
+                  <th>Percentage</th>
+                  <th>SGPA</th>
+                  <th>Grade</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashTopperBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. STUDENTS VIEW ================= -->
+      <section class="view-section" id="view-students">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Student Directory</h2>
+              <p class="card-desc">Registration, department, section and candidate profiles</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-sm" onclick="acadex.exportStudentsCsv()">Export CSV</button>
+              <button class="btn btn-sm btn-primary" onclick="acadex.openStudentModal(-1)">Add Student</button>
+            </div>
+          </div>
+
+          <!-- Filter Toolbar -->
+          <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+            <input type="text" class="input" id="stSearch" placeholder="Search by name or enrollment..." style="max-width: 260px;">
+            <select class="input" id="stSecFilter" style="max-width: 150px;">
+              <option value="">All Sections</option>
+            </select>
+            <button class="btn btn-sm" onclick="acadex.clearStudentFilters()">Reset Filters</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">#</th>
+                  <th class="sortable" onclick="acadex.handleSort('students', 'e')">Enrollment <span class="sort-arrow">&uarr;&darr;</span></th>
+                  <th class="sortable" onclick="acadex.handleSort('students', 'n')">Full Name <span class="sort-arrow">&uarr;&darr;</span></th>
+                  <th>Section</th>
+                  <th>Department</th>
+                  <th>Email</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsBody"></tbody>
+            </table>
+            <div class="table-footer" id="stTableFooter"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. SUBJECTS VIEW ================= -->
+      <section class="view-section" id="view-subjects">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Curriculum &amp; Course Directory</h2>
+              <p class="card-desc">Registered semester papers, credit weights, and grading thresholds</p>
+            </div>
+            <button class="btn btn-sm btn-primary role-group-admin" onclick="acadex.openSubjectModal(-1)">Add Subject</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th>Course Code</th>
+                  <th>Subject Title</th>
+                  <th>Max Marks</th>
+                  <th>Credits</th>
+                  <th>Type</th>
+                  <th>Semester</th>
+                  <th style="text-align: right;" class="role-group-admin">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subjectsBody"></tbody>
+            </table>
+          </div>
+          <div class="notice">
+            <strong>Credit Weighting Policy:</strong> SGPA is determined via <code>&Sigma;(Grade Point &times; Credits) / &Sigma;(Credits)</code>. Adjusting course credits recalculates merit rankings and transcripts automatically.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. MARKS ENTRY VIEW ================= -->
+      <section class="view-section" id="view-marks">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Marks Evaluation &amp; Grade Entry</h2>
+              <p class="card-desc">Real-time candidate evaluation with instant grade and SGPA verification</p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <select class="input" id="evalSelectStudent" style="min-width: 240px;"></select>
+              <button class="btn btn-sm btn-primary" id="btnSaveMarks">Save Evaluation</button>
+            </div>
+          </div>
+
+          <!-- Student Profile Pill -->
+          <div style="background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 14px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 13px;">
+              <div><span style="color:var(--ink-muted);">Candidate:</span> <strong id="evalStName">-</strong></div>
+              <div><span style="color:var(--ink-muted);">Enrollment:</span> <strong id="evalStEnr" class="mono">-</strong></div>
+              <div><span style="color:var(--ink-muted);">Section:</span> <strong id="evalStSec">-</strong></div>
+              <div><span style="color:var(--ink-muted);">Ordinance Scheme:</span> <strong>10-Point CBCS</strong></div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th>Course Title</th>
+                  <th style="width: 70px;">Max</th>
+                  <th style="width: 140px;">Marks Scored</th>
+                  <th style="width: 70px;">Credits</th>
+                  <th style="width: 80px;">%</th>
+                  <th style="width: 75px;">Grade</th>
+                  <th style="width: 65px;">GP</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="evalMarksBody"></tbody>
+            </table>
+          </div>
+
+          <!-- Evaluation Result Box -->
+          <div style="margin-top: 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);">
+            <div class="metrics-grid" style="margin-bottom: 8px;">
+              <div class="metric-box">
+                <div class="label">Aggregate Marks</div>
+                <div class="value" id="resTotalMarks">0 / 0</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">Percentage</div>
+                <div class="value" id="resPercentage">0.00%</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">Semester SGPA</div>
+                <div class="value" id="resSGPA">0.00</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">Conferred Grade</div>
+                <div class="value" id="resGrade">&ndash;</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: var(--radius); font-weight: 500;" id="evalResultBanner">
+              <span id="evalResultText">Enter marks for all registered courses to compute final result.</span>
+              <button class="btn btn-sm btn-primary" onclick="acadex.exportCurrentStudentPdf()">Download Scorecard (PDF)</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. RESULTS & RANKINGS VIEW ================= -->
+      <section class="view-section" id="view-results">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Class Results &amp; Merit Standing</h2>
+              <p class="card-desc">Credit-weighted SGPA tabulation with automatic tie-breaking</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-sm" onclick="acadex.exportResultsCsv()">Download Merit List (CSV)</button>
+              <button class="btn btn-sm btn-primary" onclick="acadex.exportClassResultsPdf()">Print Class Register</button>
+            </div>
+          </div>
+
+          <!-- Toolbar -->
+          <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+            <input type="text" class="input" id="rankSearch" placeholder="Filter by candidate or enrollment..." style="max-width: 250px;">
+            <select class="input" id="rankFilterStatus" style="max-width: 150px;">
+              <option value="ALL">All Outcomes</option>
+              <option value="PASS">Pass Only</option>
+              <option value="FAIL">Remedial / Fail</option>
+              <option value="INCOMPLETE">Incomplete</option>
+            </select>
+            <button class="btn btn-sm" onclick="acadex.clearResultsFilters()">Reset Filters</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th style="width: 55px;" class="sortable" onclick="acadex.handleSort('results', 'rank')">Rank <span class="sort-arrow">&uarr;&darr;</span></th>
+                  <th class="sortable" onclick="acadex.handleSort('results', 'n')">Candidate Name <span class="sort-arrow">&uarr;&darr;</span></th>
+                  <th>Enrollment</th>
+                  <th>Section</th>
+                  <th>Total / Max</th>
+                  <th class="sortable" onclick="acadex.handleSort('results', 'pct')">% <span class="sort-arrow">&uarr;&darr;</span></th>
+                  <th class="sortable" onclick="acadex.handleSort('results', 'sgpa')">SGPA <span class="sort-arrow">&uarr;&darr;</span></th>
+                  <th>Grade</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Scorecard</th>
+                </tr>
+              </thead>
+              <tbody id="rankBody"></tbody>
+            </table>
+            <div class="table-footer" id="rankTableFooter"></div>
+          </div>
+          <div class="notice">
+            <strong>Tie-Breaking Policy:</strong> When two candidates obtain identical SGPA, overall aggregate percentage determines merit order. Missing mark records automatically place candidate in <em>Incomplete</em> status.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 6. STUDENT PORTAL VIEW (STUDENT ROLE) ================= -->
+      <section class="view-section" id="view-student-portal">
+        <div class="student-scorecard">
+          <div class="student-scorecard-header">
+            <div>
+              <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.85;">Student Performance Portal</div>
+              <h2 style="margin: 3px 0 0; font-size: 18px;" id="portalCandidateName">Aarav Sharma</h2>
+              <div style="font-size: 12.5px; opacity: 0.9; margin-top: 2px;">
+                Enrollment: <span class="mono" id="portalEnrollment">0901CS261001</span> &middot; CSBS Semester I &middot; Section <span id="portalSection">CSBS-A</span>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <button class="btn btn-sm btn-gold" onclick="acadex.exportCurrentStudentPdf()">Download Official Transcript (PDF)</button>
+            </div>
+          </div>
+
+          <div style="padding: 20px;">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="label">Aggregate Marks</div>
+                <div class="value" id="portalMarks">0 / 0</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">Percentage</div>
+                <div class="value" id="portalPct">0.00%</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">Semester SGPA</div>
+                <div class="value" id="portalSGPA">0.00</div>
+              </div>
+              <div class="metric-box">
+                <div class="label">Overall Grade</div>
+                <div class="value" id="portalGrade">&ndash;</div>
+              </div>
+            </div>
+
+            <h3 style="font-size: 14px; margin: 16px 0 10px; font-weight: 600;">Registered Course Evaluation Breakdown</h3>
+            <div class="table-wrap">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Course Code</th>
+                    <th>Subject Title</th>
+                    <th>Max</th>
+                    <th>Marks Scored</th>
+                    <th>Credits</th>
+                    <th>%</th>
+                    <th>Grade</th>
+                    <th>Grade Point</th>
+                    <th>Outcome</th>
+                  </tr>
+                </thead>
+                <tbody id="portalCoursesBody"></tbody>
+              </table>
+            </div>
+
+            <div class="notice" style="margin-top: 14px;">
+              <strong>Academic Ordinance Advisory:</strong> Grade transcripts are issued in accordance with the Autonomous Institute Evaluation Manual of Madhav Institute of Technology &amp; Science (MITS), Gwalior.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 7. CLASS ANALYTICS VIEW ================= -->
+      <section class="view-section" id="view-analytics">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Subject-Wise Performance Metrics</h2>
+              <p class="card-desc">Detailed statistical assessment across all curriculum papers</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th>Course Code</th>
+                  <th>Subject Title</th>
+                  <th>Max</th>
+                  <th>Credits</th>
+                  <th>Evaluated</th>
+                  <th>Average %</th>
+                  <th>Highest</th>
+                  <th>Lowest</th>
+                  <th>Pass Rate</th>
+                </tr>
+              </thead>
+              <tbody id="analyticsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 12px;">Cohort Qualification Distribution</h3>
+            <div id="analyticsPassFail"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 10px;">Academic Remediation Required</h3>
+            <p class="card-desc" style="margin-bottom: 10px;">Candidates scoring below passing threshold (&lt;40%)</p>
+            <div id="analyticsRemedial"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 8. GRADING SCALE VIEW ================= -->
+      <section class="view-section" id="view-grading">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Institutional 10-Point Ordinance Scale</h2>
+              <p class="card-desc">Customizable threshold limits, grade point weights, and qualitative remarks</p>
+            </div>
+            <button class="btn btn-sm" onclick="acadex.resetGradingScale()">Reset Scheme</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th style="width: 80px;">Letter Grade</th>
+                  <th style="width: 140px;">Minimum %</th>
+                  <th style="width: 110px;">Grade Point (GP)</th>
+                  <th>Academic Descriptor</th>
+                  <th style="text-align: right; width: 80px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="gradingBody"></tbody>
+            </table>
+          </div>
+          <div class="notice">
+            Altering percentage thresholds recalculates candidate evaluations across all dashboards, merit ranks, and official scorecards instantly.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 9. AUDIT LOG VIEW ================= -->
+      <section class="view-section" id="view-audit">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Institutional Audit Trail</h2>
+              <p class="card-desc">Tamper-evident record of candidate creation, marks modifications and ordinance changes</p>
+            </div>
+            <button class="btn btn-sm" onclick="acadex.clearAuditLogs()">Clear Log History</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th style="width: 160px;">Timestamp</th>
+                  <th style="width: 90px;">Operator</th>
+                  <th style="width: 140px;">Operation</th>
+                  <th>Subject / Entity</th>
+                  <th>Audit Snapshot Details</th>
+                </tr>
+              </thead>
+              <tbody id="auditBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10. REPORTS & BACKUP VIEW ================= -->
+      <section class="view-section" id="view-reports">
+        <div class="card">
+          <h2 class="card-title">Official Academic Reports &amp; Exports</h2>
+          <p class="card-desc" style="margin-bottom: 16px;">Download certified marksheets, class registers and encrypted JSON backup snapshots</p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+            <div style="border: 1px solid var(--border); padding: 14px; border-radius: var(--radius);">
+              <h4 style="margin: 0 0 4px 0;">Official Class Merit Register (CSV)</h4>
+              <p style="font-size: 12px; color: var(--ink-secondary); margin: 0 0 10px 0;">Tabular spreadsheet featuring complete marks, credits, and SGPA standings.</p>
+              <button class="btn btn-sm btn-primary" onclick="acadex.exportResultsCsv()">Download Register CSV</button>
+            </div>
+            <div style="border: 1px solid var(--border); padding: 14px; border-radius: var(--radius);">
+              <h4 style="margin: 0 0 4px 0;">Student Master Directory (CSV)</h4>
+              <p style="font-size: 12px; color: var(--ink-secondary); margin: 0 0 10px 0;">Enrollment numbers, sections, contacts, and registration details.</p>
+              <button class="btn btn-sm btn-primary" onclick="acadex.exportStudentsCsv()">Download Directory CSV</button>
+            </div>
+            <div style="border: 1px solid var(--border); padding: 14px; border-radius: var(--radius);">
+              <h4 style="margin: 0 0 4px 0;">System Snapshot &amp; Migration (JSON)</h4>
+              <p style="font-size: 12px; color: var(--ink-secondary); margin: 0 0 10px 0;">Complete database backup containing students, marks, curriculum and scale.</p>
+              <div style="display:flex; gap: 6px;">
+                <button class="btn btn-sm" onclick="acadex.exportJsonBackup()">Backup JSON</button>
+                <button class="btn btn-sm" onclick="document.getElementById('importJsonFile').click()">Restore</button>
+                <input type="file" id="importJsonFile" style="display:none;" accept=".json" onchange="acadex.importJsonBackup(event)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title" style="color:var(--bad);">Database Reset Utilities</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Reset database to clean initial state or reload standard demonstration class</p>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-sm" onclick="acadex.reloadDemoData()">Reload 5 Demo Students</button>
+            <button class="btn btn-sm btn-danger" onclick="acadex.confirmWipeAll()">Wipe All Records</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Student Modal -->
+<div class="modal-overlay" id="studentModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="studentModalTitle">Add Candidate</h3>
+      <button class="btn btn-sm" onclick="acadex.closeModals()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="studentForm" onsubmit="event.preventDefault(); acadex.saveStudent();">
+        <input type="hidden" id="studentEditIdx" value="-1">
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Full Name *</label>
+          <input type="text" class="input" id="stNameInput" required placeholder="e.g. Diya Verma">
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Enrollment Number *</label>
+          <input type="text" class="input mono" id="stEnrInput" required placeholder="e.g. 0901CS261002">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Section</label>
+            <input type="text" class="input" id="stSecInput" value="CSBS-A">
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Department</label>
+            <input type="text" class="input" value="CSBS" readonly style="background:var(--surface-alt);">
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Candidate Email</label>
+          <input type="email" class="input" id="stEmailInput" placeholder="student@mits.ac.in">
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-sm" onclick="acadex.closeModals()">Cancel</button>
+      <button class="btn btn-sm btn-primary" onclick="acadex.saveStudent()">Save Record</button>
+    </div>
+  </div>
+</div>
+
+<!-- Subject Modal -->
+<div class="modal-overlay" id="subjectModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="subjectModalTitle">Add Course</h3>
+      <button class="btn btn-sm" onclick="acadex.closeModals()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="subjectForm" onsubmit="event.preventDefault(); acadex.saveSubject();">
+        <input type="hidden" id="subEditIdx" value="-1">
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Course Title *</label>
+          <input type="text" class="input" id="subNameInput" required placeholder="e.g. Digital Logic Design">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Course Code *</label>
+            <input type="text" class="input mono" id="subCodeInput" required placeholder="e.g. CS101">
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Category</label>
+            <select class="input" id="subTypeInput">
+              <option value="Theory">Theory</option>
+              <option value="Practical">Practical</option>
+              <option value="Project">Project</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Maximum Marks *</label>
+            <input type="number" class="input" id="subMaxInput" min="1" max="1000" value="100" required>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Credits *</label>
+            <input type="number" class="input" id="subCredInput" min="0" max="10" step="0.5" value="4" required>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-sm" onclick="acadex.closeModals()">Cancel</button>
+      <button class="btn btn-sm btn-primary" onclick="acadex.saveSubject()">Save Course</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card" style="max-width: 400px;">
+    <div class="modal-head">
+      <h3 id="confirmModalTitle">Confirm Action</h3>
+      <button class="btn btn-sm" onclick="acadex.closeModals()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin: 0; font-size: 13px;" id="confirmModalText">Are you sure you want to proceed?</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-sm" onclick="acadex.closeModals()">Cancel</button>
+      <button class="btn btn-sm btn-danger" id="confirmModalBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/**
+ * ACADEX &middot; Autonomous Grade Evaluation & Merit System 2.0
+ * Architecture: Clean, Centralized, Tested, Zero-Dependency Client Logic
+ */
+const STORAGE_KEY = "acadex_v2_store";
+
+const INITIAL_DATA = {
+  isPublished: false,
+  currentRole: "ADMIN",
+  selectedStudent: 0,
+  scale: [
+    { g: "A+", min: 90, gp: 10, r: "Outstanding" },
+    { g: "A",  min: 80, gp: 9,  r: "Excellent" },
+    { g: "B+", min: 70, gp: 8,  r: "Very Good" },
+    { g: "B",  min: 60, gp: 7,  r: "Good" },
+    { g: "C+", min: 50, gp: 6,  r: "Above Average" },
+    { g: "C",  min: 45, gp: 5,  r: "Average" },
+    { g: "D",  min: 40, gp: 4,  r: "Pass" },
+    { g: "F",  min: 0,  gp: 0,  r: "Fail" }
+  ],
+  subjects: [
+    { n: "Digital Logic Design", code: "CS101", m: 100, c: 4, t: "Theory" },
+    { n: "Engineering Mathematics I", code: "MA101", m: 100, c: 4, t: "Theory" },
+    { n: "Programming in C", code: "CS102", m: 100, c: 3, t: "Theory" },
+    { n: "Engineering Physics", code: "PH101", m: 100, c: 3, t: "Theory" },
+    { n: "Communication Skills", code: "HS101", m: 100, c: 2, t: "Theory" },
+    { n: "C Programming Lab", code: "CS102L", m: 50, c: 2, t: "Practical" }
+  ],
+  students: [
+    { n: "Aarav Sharma",  e: "0901CS261001", s: "CSBS-A", email: "aarav@mits.ac.in", k: [88, 92, 85, 90, 78, 44] },
+    { n: "Diya Verma",    e: "0901CS261002", s: "CSBS-A", email: "diya@mits.ac.in",  k: [76, 81, 69, 74, 72, 38] },
+    { n: "Kabir Singh",   e: "0901CS261003", s: "CSBS-A", email: "kabir@mits.ac.in", k: [58, 47, 62, 51, 55, 25] },
+    { n: "Meera Joshi",   e: "0901CS261004", s: "CSBS-A", email: "meera@mits.ac.in", k: [95, 91, 97, 93, 89, 50] },
+    { n: "Rohan Gupta",   e: "0901CS261005", s: "CSBS-A", email: "rohan@mits.ac.in", k: [38, 52, 44, 60, 48, 20] }
+  ],
+  auditLogs: [
+    { time: new Date().toLocaleString("en-IN"), user: "SYSTEM", action: "SYSTEM_INITIALIZE", target: "Acadex 2.0 Engine", details: "Core CBCS grading scheme registered with 6 curriculum papers." }
+  ]
+};
+
+// --- Theme Management Class ---
+class AcadexThemeManager {
+  constructor() {
+    this.mode = localStorage.getItem("acadex_theme") || "light";
+    this.mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    this.init();
+  }
+
+  init() {
+    this.applyTheme(this.mode, false);
+    this.mediaQuery.addEventListener("change", () => {
+      if (this.mode === "system") {
+        this.applyTheme("system", false);
+      }
+    });
+    this.renderButtons();
+  }
+
+  setMode(mode) {
+    this.mode = mode;
+    localStorage.setItem("acadex_theme", mode);
+    this.applyTheme(mode, true);
+    this.renderButtons();
+  }
+
+  applyTheme(mode, notify = true) {
+    const isDark = mode === "dark" || (mode === "system" && this.mediaQuery.matches);
+    document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+    if (notify && window.acadex) {
+      const label = mode === "light" ? "Light theme applied" : mode === "dark" ? "Dark theme applied" : "System theme synced";
+      window.acadex.toast(label, "info");
+    }
+  }
+
+  renderButtons() {
+    document.querySelectorAll(".theme-btn").forEach(btn => {
+      const isActive = btn.dataset.themeVal === this.mode;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-checked", isActive ? "true" : "false");
+    });
+  }
+}
+
+class AcadexEngine {
+  constructor() {
+    this.state = this.loadState();
+    this.theme = new AcadexThemeManager();
+    this.currentView = "dashboard";
+    this.sortConfig = {
+      students: { key: "n", dir: "asc" },
+      results: { key: "rank", dir: "asc" }
+    };
+    this.pagination = {
+      students: { page: 1, limit: 10 },
+      results: { page: 1, limit: 10 }
+    };
+    this.setupListeners();
+    this.updateRoleView();
+    this.render();
+  }
+
+  loadState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.students) && Array.isArray(parsed.subjects)) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn("Storage load warning", e);
+    }
+    return JSON.parse(JSON.stringify(INITIAL_DATA));
+  }
+
+  saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+    } catch (e) {
+      this.toast("Storage capacity reached or disabled.", "error");
+    }
+  }
+
+  logAudit(action, target, details) {
+    if (!this.state.auditLogs) this.state.auditLogs = [];
+    this.state.auditLogs.unshift({
+      time: new Date().toLocaleString("en-IN"),
+      user: this.state.currentRole,
+      action,
+      target,
+      details
+    });
+    if (this.state.auditLogs.length > 200) this.state.auditLogs.pop();
+    this.saveState();
+  }
+
+  toast(msg, type = "info") {
+    const container = document.getElementById("toastContainer");
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    el.textContent = msg;
+    container.appendChild(el);
+    setTimeout(() => {
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 250);
+    }, 3200);
+  }
+
+  confirm(title, text, onConfirm) {
+    document.getElementById("confirmModalTitle").textContent = title;
+    document.getElementById("confirmModalText").textContent = text;
+    const btn = document.getElementById("confirmModalBtn");
+    btn.onclick = () => {
+      onConfirm();
+      this.closeModals();
+    };
+    document.getElementById("confirmModal").classList.add("active");
+  }
+
+  closeModals() {
+    document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("active"));
+  }
+
+  // --- Academic Calculation Engine ---
+  getGradeForPercentage(pct) {
+    const sorted = [...this.state.scale].sort((a, b) => b.min - a.min);
+    for (const entry of sorted) {
+      if (pct >= entry.min) return entry;
+    }
+    return sorted[sorted.length - 1] || { g: "F", gp: 0, r: "Fail" };
+  }
+
+  evaluateStudent(st) {
+    let totalObt = 0;
+    let totalMax = 0;
+    let totalWeightedPoints = 0;
+    let totalCredits = 0;
+    let entered = 0;
+    let failed = 0;
+    let hasInvalid = false;
+
+    const details = this.state.subjects.map((sub, i) => {
+      const val = st.k ? st.k[i] : null;
+      if (val === "" || val === null || val === undefined) {
+        return { entered: false, val: null, p: null, g: null, gp: null, status: "PENDING" };
+      }
+      const num = Number(val);
+      if (isNaN(num) || num < 0 || num > sub.m) {
+        hasInvalid = true;
+        return { entered: true, invalid: true, val: num, p: null, g: null, gp: null, status: "INVALID" };
+      }
+
+      entered++;
+      const p = (num / sub.m) * 100;
+      const gr = this.getGradeForPercentage(p);
+      totalObt += num;
+      totalMax += sub.m;
+      totalWeightedPoints += (gr.gp * sub.c);
+      totalCredits += sub.c;
+      if (gr.gp === 0) failed++;
+
+      return {
+        entered: true,
+        val: num,
+        p,
+        g: gr.g,
+        gp: gr.gp,
+        status: gr.gp === 0 ? "FAIL" : "PASS"
+      };
+    });
+
+    const isComplete = entered === this.state.subjects.length && !hasInvalid;
+    const aggPct = totalMax > 0 ? (totalObt / totalMax) * 100 : 0;
+    const sgpa = (totalCredits > 0 && isComplete) ? (totalWeightedPoints / totalCredits) : null;
+    const overallGrade = isComplete ? this.getGradeForPercentage(aggPct).g : null;
+
+    let resultStatus = "PENDING";
+    if (hasInvalid) resultStatus = "INVALID";
+    else if (!isComplete && entered > 0) resultStatus = "INCOMPLETE";
+    else if (isComplete) resultStatus = failed > 0 ? "FAIL" : "PASS";
+
+    return {
+      details,
+      totalObt,
+      totalMax,
+      entered,
+      failed,
+      isComplete,
+      hasInvalid,
+      aggPct,
+      sgpa,
+      overallGrade,
+      resultStatus
+    };
+  }
+
+  getRankedCohort() {
+    const list = this.state.students.map((st, idx) => ({
+      index: idx,
+      student: st,
+      eval: this.evaluateStudent(st)
+    }));
+
+    const evaluable = list.filter(item => item.eval.isComplete && !item.eval.hasInvalid);
+    evaluable.sort((a, b) => {
+      if (b.eval.sgpa !== a.eval.sgpa) return (b.eval.sgpa || 0) - (a.eval.sgpa || 0);
+      return (b.eval.aggPct || 0) - (a.eval.aggPct || 0);
+    });
+
+    let rank = 1;
+    evaluable.forEach((item, idx) => {
+      if (idx > 0) {
+        const prev = evaluable[idx - 1];
+        if (item.eval.sgpa !== prev.eval.sgpa || item.eval.aggPct !== prev.eval.aggPct) {
+          rank = idx + 1;
+        }
+      }
+      item.rank = rank;
+    });
+
+    const rankMap = new Map();
+    evaluable.forEach(item => rankMap.set(item.index, item.rank));
+
+    return list.map(item => ({
+      ...item,
+      rank: rankMap.get(item.index) || null
+    }));
+  }
+
+  // --- View Orchestration & Navigation ---
+  navTo(viewName) {
+    this.currentView = viewName;
+    document.querySelectorAll(".sidebar-nav .nav-link").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.view === viewName);
+    });
+    document.querySelectorAll(".view-section").forEach(sec => {
+      sec.classList.toggle("active", sec.id === `view-${viewName}`);
+    });
+
+    const headers = {
+      dashboard: "Academic Dashboard",
+      students: "Student Records Directory",
+      subjects: "Curriculum & Course Papers",
+      marks: "Evaluation & Marks Register",
+      results: "Official Class Merit Register",
+      "student-portal": "Candidate Grade Transcript",
+      analytics: "Cohort Performance Analytics",
+      grading: "10-Point Ordinance Scheme",
+      audit: "Institutional Audit Log",
+      reports: "Transcripts, Data Export & Migration"
+    };
+    document.getElementById("pageHeadingTitle").textContent = headers[viewName] || "Acadex Evaluation";
+    document.getElementById("sidebar").classList.remove("open");
+    this.render();
+  }
+
+  updateRoleView() {
+    const role = this.state.currentRole;
+    document.getElementById("roleBadge").textContent = role;
+    document.getElementById("roleSelector").value = role;
+
+    const adminEls = document.querySelectorAll(".role-group-admin");
+    const teacherEls = document.querySelectorAll(".role-group-admin-teacher");
+    const studentEls = document.querySelectorAll(".role-group-student");
+
+    if (role === "STUDENT") {
+      adminEls.forEach(el => el.style.display = "none");
+      teacherEls.forEach(el => el.style.display = "none");
+      studentEls.forEach(el => el.style.display = "flex");
+      this.navTo("student-portal");
+    } else if (role === "TEACHER") {
+      adminEls.forEach(el => el.style.display = "none");
+      teacherEls.forEach(el => el.style.display = "flex");
+      studentEls.forEach(el => el.style.display = "none");
+      if (this.currentView === "audit" || this.currentView === "grading" || this.currentView === "student-portal") {
+        this.navTo("dashboard");
+      }
+    } else {
+      adminEls.forEach(el => el.style.display = "flex");
+      teacherEls.forEach(el => el.style.display = "flex");
+      studentEls.forEach(el => el.style.display = "none");
+    }
+
+    const pubBadge = document.getElementById("topPublicationBadge");
+    const pubBtn = document.getElementById("btnTogglePublication");
+    if (this.state.isPublished) {
+      pubBadge.className = "pub-badge published";
+      pubBadge.textContent = "Official Results Published";
+      pubBtn.textContent = "Unpublish Results";
+    } else {
+      pubBadge.className = "pub-badge draft";
+      pubBadge.textContent = "Evaluation In Progress";
+      pubBtn.textContent = "Publish Results";
+    }
+  }
+
+  setupListeners() {
+    // Theme switcher listeners
+    document.querySelectorAll(".theme-btn").forEach(btn => {
+      btn.onclick = () => {
+        this.theme.setMode(btn.dataset.themeVal);
+      };
+    });
+
+    document.querySelectorAll(".sidebar-nav .nav-link").forEach(btn => {
+      btn.onclick = () => this.navTo(btn.dataset.view);
+    });
+
+    document.getElementById("mobileMenuBtn").onclick = () => {
+      document.getElementById("sidebar").classList.toggle("open");
+    };
+
+    document.getElementById("roleSelector").onchange = (e) => {
+      this.state.currentRole = e.target.value;
+      this.saveState();
+      this.updateRoleView();
+      this.toast(`Switched to ${e.target.value} view`, "info");
+      this.render();
+    };
+
+    document.getElementById("btnTogglePublication").onclick = () => {
+      this.state.isPublished = !this.state.isPublished;
+      this.logAudit(
+        this.state.isPublished ? "RESULTS_PUBLISHED" : "RESULTS_UNPUBLISHED",
+        "Semester I Cohort",
+        this.state.isPublished ? "Official results locked and published for transcript distribution." : "Results reverted to draft status for revision."
+      );
+      this.updateRoleView();
+      this.toast(this.state.isPublished ? "Official Results Published!" : "Results reverted to Draft.", "success");
+      this.render();
+    };
+
+    document.getElementById("btnGlobalReport").onclick = () => {
+      this.exportClassResultsPdf();
+    };
+
+    document.getElementById("evalSelectStudent").onchange = (e) => {
+      this.state.selectedStudent = parseInt(e.target.value, 10);
+      this.saveState();
+      this.renderMarks();
+      if (this.currentView === "student-portal") this.renderStudentPortal();
+    };
+    document.getElementById("btnSaveMarks").onclick = () => {
+      this.saveMarksEvaluation();
+    };
+
+    document.getElementById("stSearch").oninput = () => { this.pagination.students.page = 1; this.renderStudents(); };
+    document.getElementById("stSecFilter").onchange = () => { this.pagination.students.page = 1; this.renderStudents(); };
+    document.getElementById("rankSearch").oninput = () => { this.pagination.results.page = 1; this.renderResults(); };
+    document.getElementById("rankFilterStatus").onchange = () => { this.pagination.results.page = 1; this.renderResults(); };
+  }
+
+  handleSort(table, key) {
+    const cur = this.sortConfig[table];
+    if (cur.key === key) {
+      cur.dir = cur.dir === "asc" ? "desc" : "asc";
+    } else {
+      cur.key = key;
+      cur.dir = "asc";
+    }
+    if (table === "students") this.renderStudents();
+    if (table === "results") this.renderResults();
+  }
+
+  // --- CRUD Modals ---
+  openStudentModal(idx = -1) {
+    document.getElementById("studentEditIdx").value = idx;
+    const title = document.getElementById("studentModalTitle");
+    if (idx >= 0) {
+      const st = this.state.students[idx];
+      title.textContent = "Edit Candidate Record";
+      document.getElementById("stNameInput").value = st.n || "";
+      document.getElementById("stEnrInput").value = st.e || "";
+      document.getElementById("stSecInput").value = st.s || "CSBS-A";
+      document.getElementById("stEmailInput").value = st.email || "";
+    } else {
+      title.textContent = "Add New Candidate";
+      document.getElementById("studentForm").reset();
+      document.getElementById("stSecInput").value = "CSBS-A";
+    }
+    document.getElementById("studentModal").classList.add("active");
+  }
+
+  saveStudent() {
+    const name = document.getElementById("stNameInput").value.trim();
+    const enr = document.getElementById("stEnrInput").value.trim().toUpperCase();
+    const sec = document.getElementById("stSecInput").value.trim() || "CSBS-A";
+    const email = document.getElementById("stEmailInput").value.trim();
+    const idx = parseInt(document.getElementById("studentEditIdx").value, 10);
+
+    if (!name || !enr) {
+      this.toast("Name and Enrollment number are required.", "warning");
+      return;
+    }
+
+    const dup = this.state.students.some((s, i) => i !== idx && s.e.toLowerCase() === enr.toLowerCase());
+    if (dup) {
+      this.toast(`Enrollment ${enr} already exists in database.`, "error");
+      return;
+    }
+
+    if (idx >= 0) {
+      const prev = this.state.students[idx];
+      this.state.students[idx].n = name;
+      this.state.students[idx].e = enr;
+      this.state.students[idx].s = sec;
+      this.state.students[idx].email = email;
+      this.logAudit("STUDENT_UPDATE", enr, `Updated details from ${prev.n} to ${name}`);
+      this.toast(`Updated ${name} successfully.`, "success");
+    } else {
+      const k = new Array(this.state.subjects.length).fill("");
+      this.state.students.push({ n: name, e: enr, s: sec, email, k });
+      this.state.selectedStudent = this.state.students.length - 1;
+      this.logAudit("STUDENT_CREATE", enr, `Registered new candidate ${name} in section ${sec}`);
+      this.toast(`Registered ${name}.`, "success");
+    }
+
+    this.saveState();
+    this.closeModals();
+    this.render();
+  }
+
+  deleteStudent(idx) {
+    const st = this.state.students[idx];
+    this.confirm(
+      "Confirm Candidate Deletion",
+      `Are you sure you want to delete candidate '${st.n}' (${st.e})? Associated marks will be permanently removed.`,
+      () => {
+        this.logAudit("STUDENT_DELETE", st.e, `Removed candidate ${st.n} and all evaluative marks.`);
+        this.state.students.splice(idx, 1);
+        if (this.state.selectedStudent >= this.state.students.length) {
+          this.state.selectedStudent = Math.max(0, this.state.students.length - 1);
+        }
+        this.saveState();
+        this.toast(`Deleted ${st.n}.`, "info");
+        this.render();
+      }
+    );
+  }
+
+  openSubjectModal(idx = -1) {
+    document.getElementById("subEditIdx").value = idx;
+    const title = document.getElementById("subjectModalTitle");
+    if (idx >= 0) {
+      const sub = this.state.subjects[idx];
+      title.textContent = "Edit Course Paper";
+      document.getElementById("subNameInput").value = sub.n;
+      document.getElementById("subCodeInput").value = sub.code;
+      document.getElementById("subTypeInput").value = sub.t || "Theory";
+      document.getElementById("subMaxInput").value = sub.m;
+      document.getElementById("subCredInput").value = sub.c;
+    } else {
+      title.textContent = "Add Curriculum Course";
+      document.getElementById("subjectForm").reset();
+      document.getElementById("subMaxInput").value = 100;
+      document.getElementById("subCredInput").value = 3;
+    }
+    document.getElementById("subjectModal").classList.add("active");
+  }
+
+  saveSubject() {
+    const name = document.getElementById("subNameInput").value.trim();
+    const code = document.getElementById("subCodeInput").value.trim().toUpperCase();
+    const type = document.getElementById("subTypeInput").value;
+    const max = parseInt(document.getElementById("subMaxInput").value, 10);
+    const credits = parseFloat(document.getElementById("subCredInput").value);
+    const idx = parseInt(document.getElementById("subEditIdx").value, 10);
+
+    if (!name || !code || isNaN(max) || isNaN(credits) || max <= 0 || credits < 0) {
+      this.toast("Please fill all valid course details.", "warning");
+      return;
+    }
+
+    if (idx >= 0) {
+      const prev = this.state.subjects[idx];
+      this.state.subjects[idx] = { n: name, code, m: max, c: credits, t: type };
+      this.logAudit("SUBJECT_UPDATE", code, `Modified course properties from ${prev.n} (${prev.code})`);
+      this.toast(`Updated ${code}.`, "success");
+    } else {
+      this.state.subjects.push({ n: name, code, m: max, c: credits, t: type });
+      this.state.students.forEach(st => {
+        if (!st.k) st.k = [];
+        st.k.push("");
+      });
+      this.logAudit("SUBJECT_CREATE", code, `Added new curriculum paper ${name} (${credits} credits)`);
+      this.toast(`Added ${code}.`, "success");
+    }
+
+    this.saveState();
+    this.closeModals();
+    this.render();
+  }
+
+  deleteSubject(idx) {
+    if (this.state.subjects.length <= 1) {
+      this.toast("Ordinance requires at least one curriculum paper.", "warning");
+      return;
+    }
+    const sub = this.state.subjects[idx];
+    this.confirm(
+      "Confirm Subject Removal",
+      `Are you sure you want to remove '${sub.n}' (${sub.code})? Marks recorded for all candidates in this course will be pruned.`,
+      () => {
+        this.logAudit("SUBJECT_DELETE", sub.code, `Removed subject ${sub.n} from curriculum.`);
+        this.state.subjects.splice(idx, 1);
+        this.state.students.forEach(st => {
+          if (st.k) st.k.splice(idx, 1);
+        });
+        this.saveState();
+        this.toast(`Removed ${sub.code}.`, "info");
+        this.render();
+      }
+    );
+  }
+
+  saveMarksEvaluation() {
+    const st = this.state.students[this.state.selectedStudent];
+    if (!st) return;
+    this.logAudit("MARKS_RECORDED", st.e, `Recorded evaluation marks for candidate ${st.n}.`);
+    this.saveState();
+    this.toast(`Saved marks for ${st.n}.`, "success");
+    this.renderMarks();
+  }
+
+  updateMark(subIdx, value) {
+    const st = this.state.students[this.state.selectedStudent];
+    if (!st) return;
+    if (!st.k) st.k = new Array(this.state.subjects.length).fill("");
+    st.k[subIdx] = value === "" ? "" : Number(value);
+    this.saveState();
+    this.renderMarks();
+  }
+
+  // --- Master Render ---
+  render() {
+    if (this.currentView === "dashboard") this.renderDashboard();
+    else if (this.currentView === "students") this.renderStudents();
+    else if (this.currentView === "subjects") this.renderSubjects();
+    else if (this.currentView === "marks") this.renderMarks();
+    else if (this.currentView === "results") this.renderResults();
+    else if (this.currentView === "student-portal") this.renderStudentPortal();
+    else if (this.currentView === "analytics") this.renderAnalytics();
+    else if (this.currentView === "grading") this.renderGrading();
+    else if (this.currentView === "audit") this.renderAudit();
+  }
+
+  // --- 1. Dashboard View ---
+  renderDashboard() {
+    const cohort = this.getRankedCohort();
+    const totalStudents = this.state.students.length;
+    const completed = cohort.filter(r => r.eval.isComplete && !r.eval.hasInvalid);
+    const passCount = completed.filter(r => r.eval.resultStatus === "PASS").length;
+    const passPct = completed.length > 0 ? ((passCount / completed.length) * 100).toFixed(1) : "0.0";
+    const classAvg = completed.length > 0
+      ? (completed.reduce((acc, r) => acc + r.eval.aggPct, 0) / completed.length).toFixed(2)
+      : "0.00";
+    const topper = completed[0];
+
+    document.getElementById("dashMetrics").innerHTML = `
+      <div class="metric-box">
+        <div class="label">Total Candidates</div>
+        <div class="value">${totalStudents}</div>
+        <div class="sub">Active Enrolled</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Evaluated Cohort</div>
+        <div class="value">${completed.length}</div>
+        <div class="sub">${totalStudents - completed.length} Pending Records</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Class Average</div>
+        <div class="value">${classAvg}%</div>
+        <div class="sub">Curriculum Aggregate</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Qualification Rate</div>
+        <div class="value">${passPct}%</div>
+        <div class="sub">${passCount} Cleared / ${completed.length - passCount} Remedial</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Top Cohort SGPA</div>
+        <div class="value">${topper && topper.eval.sgpa ? topper.eval.sgpa.toFixed(2) : "--"}</div>
+        <div class="sub">${topper ? topper.student.n : "Evaluation open"}</div>
+      </div>
+    `;
+
+    const gradeCounts = {};
+    this.state.scale.forEach(s => gradeCounts[s.g] = 0);
+    completed.forEach(r => {
+      if (r.eval.overallGrade) gradeCounts[r.eval.overallGrade] = (gradeCounts[r.eval.overallGrade] || 0) + 1;
+    });
+
+    let distHtml = "";
+    this.state.scale.forEach(s => {
+      const cnt = gradeCounts[s.g] || 0;
+      const pct = completed.length > 0 ? ((cnt / completed.length) * 100).toFixed(1) : 0;
+      distHtml += `
+        <div class="dist-row">
+          <span class="badge badge-grade ${s.gp === 0 ? 'fail' : ''}">${s.g}</span>
+          <div class="dist-track">
+            <div class="dist-fill ${s.gp === 0 ? 'f' : ''}" style="width: ${pct}%"></div>
+          </div>
+          <span style="font-weight:600; text-align:right;">${cnt}</span>
+          <span style="color:var(--ink-muted); font-size:11px; text-align:right;">${pct}%</span>
+        </div>
+      `;
+    });
+    document.getElementById("dashGradeDist").innerHTML = distHtml;
+
+    let subHtml = "";
+    this.state.subjects.forEach((sub, sIdx) => {
+      let tot = 0, cnt = 0;
+      this.state.students.forEach(st => {
+        const val = st.k ? st.k[sIdx] : null;
+        if (val !== "" && val !== null && !isNaN(val)) {
+          tot += Number(val);
+          cnt++;
+        }
+      });
+      const avg = cnt > 0 ? (tot / (cnt * sub.m)) * 100 : 0;
+      subHtml += `
+        <div class="dist-row" style="grid-template-columns: 80px 1fr 50px;">
+          <span style="font-weight:600; font-size:12px;">${sub.code}</span>
+          <div class="dist-track">
+            <div class="dist-fill" style="width: ${avg.toFixed(1)}%"></div>
+          </div>
+          <span style="font-weight:600; text-align:right; font-family:'IBM Plex Mono'; font-size:12px;">${avg.toFixed(1)}%</span>
+        </div>
+      `;
+    });
+    document.getElementById("dashSubjectDist").innerHTML = subHtml;
+
+    const topTbody = document.getElementById("dashTopperBody");
+    if (completed.length === 0) {
+      topTbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:var(--ink-secondary);">No completed evaluations yet. Open the Marks Entry tab to grade candidates.</td></tr>`;
+    } else {
+      topTbody.innerHTML = completed.slice(0, 5).map(r => `
+        <tr>
+          <td><span class="badge ${r.rank === 1 ? 'badge-pass' : 'badge-grade'}">#${r.rank}</span></td>
+          <td style="font-weight:600;">${r.student.n}</td>
+          <td class="mono">${r.student.e}</td>
+          <td>${r.student.s || "CSBS-A"}</td>
+          <td class="mono">${r.eval.totalObt} / ${r.eval.totalMax}</td>
+          <td class="mono" style="font-weight:600;">${r.eval.aggPct.toFixed(2)}%</td>
+          <td class="mono" style="font-weight:700; color:var(--navy);">${r.eval.sgpa.toFixed(2)}</td>
+          <td><span class="badge badge-grade">${r.eval.overallGrade}</span></td>
+          <td><span class="badge ${r.eval.resultStatus === 'PASS' ? 'badge-pass' : 'badge-fail'}">${r.eval.resultStatus}</span></td>
+        </tr>
+      `).join("");
+    }
+  }
+
+  // --- 2. Students View ---
+  renderStudents() {
+    const q = (document.getElementById("stSearch").value || "").toLowerCase();
+    const sec = document.getElementById("stSecFilter").value;
+
+    const sections = Array.from(new Set(this.state.students.map(s => s.s || "CSBS-A")));
+    const secSelect = document.getElementById("stSecFilter");
+    secSelect.innerHTML = `<option value="">All Sections</option>` + sections.map(s => `<option value="${s}" ${s === sec ? 'selected':''}>${s}</option>`).join("");
+
+    let filtered = this.state.students.map((st, i) => ({ ...st, originalIdx: i })).filter(st => {
+      const matchQ = (st.n || "").toLowerCase().includes(q) || (st.e || "").toLowerCase().includes(q);
+      const matchSec = !sec || st.s === sec;
+      return matchQ && matchSec;
+    });
+
+    const sort = this.sortConfig.students;
+    filtered.sort((a, b) => {
+      let valA = a[sort.key] || "";
+      let valB = b[sort.key] || "";
+      return sort.dir === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    });
+
+    const total = filtered.length;
+    const page = this.pagination.students.page;
+    const limit = this.pagination.students.limit;
+    const totalPages = Math.ceil(total / limit) || 1;
+    const paged = filtered.slice((page - 1) * limit, page * limit);
+
+    const tbody = document.getElementById("studentsBody");
+    if (paged.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:28px; color:var(--ink-secondary);">No candidate records matching criteria.</td></tr>`;
+    } else {
+      tbody.innerHTML = paged.map((st, i) => `
+        <tr>
+          <td style="color:var(--ink-muted);">${(page - 1) * limit + i + 1}</td>
+          <td class="mono" style="font-weight:600;">${st.e}</td>
+          <td style="font-weight:500;">${st.n}</td>
+          <td><span class="badge" style="background:var(--surface-alt);">${st.s || "CSBS-A"}</span></td>
+          <td>CSBS</td>
+          <td style="color:var(--ink-secondary); font-size:12px;">${st.email || "student@mits.ac.in"}</td>
+          <td style="text-align: right;">
+            <button class="btn btn-sm" onclick="acadex.openStudentModal(${st.originalIdx})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="acadex.deleteStudent(${st.originalIdx})">Delete</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    document.getElementById("stTableFooter").innerHTML = `
+      <div>Showing ${(page - 1) * limit + (total ? 1 : 0)} to ${Math.min(page * limit, total)} of ${total} records</div>
+      <div class="pagination-controls">
+        <button class="page-btn" onclick="acadex.changePage('students', -1)" ${page === 1 ? 'disabled':''}>&larr; Prev</button>
+        <span style="padding: 0 4px;">Page ${page} of ${totalPages}</span>
+        <button class="page-btn" onclick="acadex.changePage('students', 1)" ${page >= totalPages ? 'disabled':''}>Next &rarr;</button>
+      </div>
+    `;
+  }
+
+  clearStudentFilters() {
+    document.getElementById("stSearch").value = "";
+    document.getElementById("stSecFilter").value = "";
+    this.pagination.students.page = 1;
+    this.renderStudents();
+  }
+
+  changePage(tbl, delta) {
+    this.pagination[tbl].page += delta;
+    if (tbl === "students") this.renderStudents();
+    if (tbl === "results") this.renderResults();
+  }
+
+  // --- 3. Subjects View ---
+  renderSubjects() {
+    const tbody = document.getElementById("subjectsBody");
+    const isTeacher = this.state.currentRole === "TEACHER";
+    tbody.innerHTML = this.state.subjects.map((sub, i) => `
+      <tr>
+        <td class="mono" style="font-weight:700; color:var(--navy);">${sub.code}</td>
+        <td style="font-weight:600;">${sub.n}</td>
+        <td class="mono">${sub.m}</td>
+        <td class="mono">${sub.c}</td>
+        <td><span class="badge" style="background:var(--surface-alt);">${sub.t || "Theory"}</span></td>
+        <td>Semester I</td>
+        <td style="text-align: right;" class="role-group-admin">
+          ${!isTeacher ? `
+            <button class="btn btn-sm" onclick="acadex.openSubjectModal(${i})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="acadex.deleteSubject(${i})">Delete</button>
+          ` : `<span style="font-size:11px; color:var(--ink-muted);">View Only</span>`}
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  // --- 4. Marks View ---
+  renderMarks() {
+    const select = document.getElementById("evalSelectStudent");
+    if (this.state.students.length === 0) {
+      select.innerHTML = `<option value="">No Candidates Registered</option>`;
+      document.getElementById("evalMarksBody").innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px;">Please register candidates in Students tab.</td></tr>`;
+      return;
+    }
+
+    select.innerHTML = this.state.students.map((st, i) => `
+      <option value="${i}" ${i === this.state.selectedStudent ? 'selected' : ''}>
+        ${i + 1}. ${st.n} (${st.e})
+      </option>
+    `).join("");
+
+    const st = this.state.students[this.state.selectedStudent] || this.state.students[0];
+    document.getElementById("evalStName").textContent = st.n;
+    document.getElementById("evalStEnr").textContent = st.e;
+    document.getElementById("evalStSec").textContent = st.s || "CSBS-A";
+
+    const res = this.evaluateStudent(st);
+
+    const tbody = document.getElementById("evalMarksBody");
+    tbody.innerHTML = this.state.subjects.map((sub, i) => {
+      const row = res.details[i];
+      const val = (st.k && st.k[i] !== undefined && st.k[i] !== null) ? st.k[i] : "";
+
+      return `
+        <tr>
+          <td>
+            <div style="font-weight:600;">${sub.n}</div>
+            <div style="font-size:11px; color:var(--ink-muted);">${sub.code} &middot; ${sub.t || 'Theory'}</div>
+          </td>
+          <td class="mono">${sub.m}</td>
+          <td>
+            <input type="number" min="0" max="${sub.m}" step="1"
+              class="input input-sm mono ${row.invalid ? 'error' : ''}"
+              style="width: 86px; font-weight:600;"
+              value="${val}"
+              placeholder="0 - ${sub.m}"
+              oninput="acadex.updateMark(${i}, this.value)"
+            >
+          </td>
+          <td class="mono">${sub.c}</td>
+          <td class="mono">${row.p !== null ? row.p.toFixed(2) + '%' : '&ndash;'}</td>
+          <td>${row.g ? `<span class="badge badge-grade ${row.gp === 0 ? 'fail' : ''}">${row.g}</span>` : '&ndash;'}</td>
+          <td class="mono" style="font-weight:600;">${row.gp !== null ? row.gp : '&ndash;'}</td>
+          <td>
+            ${row.status === 'PASS' ? '<span class="badge badge-pass">Pass</span>' :
+              row.status === 'FAIL' ? '<span class="badge badge-fail">Fail</span>' :
+              row.status === 'INVALID' ? '<span class="badge badge-fail">Invalid</span>' :
+              '<span class="badge badge-inc">Pending</span>'}
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    document.getElementById("resTotalMarks").textContent = `${res.totalObt} / ${res.totalMax}`;
+    document.getElementById("resPercentage").textContent = `${res.aggPct.toFixed(2)}%`;
+    document.getElementById("resSGPA").textContent = res.sgpa !== null ? res.sgpa.toFixed(2) : "--";
+    document.getElementById("resGrade").textContent = res.overallGrade || "--";
+
+    const banner = document.getElementById("evalResultBanner");
+    const bannerText = document.getElementById("evalResultText");
+
+    banner.className = "result-banner";
+    if (res.hasInvalid) {
+      banner.style.background = "var(--bad-bg)";
+      banner.style.color = "var(--bad)";
+      bannerText.textContent = "Validation Alert: Highlighted marks exceed course maximum or are negative.";
+    } else if (res.entered === 0) {
+      banner.style.background = "var(--surface-alt)";
+      banner.style.color = "var(--ink-secondary)";
+      bannerText.textContent = "Evaluation Pending: Enter marks above to calculate grades and SGPA.";
+    } else if (!res.isComplete) {
+      banner.style.background = "var(--warn-bg)";
+      banner.style.color = "var(--warn)";
+      bannerText.textContent = `Evaluation incomplete (${res.entered}/${this.state.subjects.length} courses recorded). Final SGPA requires all registered courses.`;
+    } else if (res.failed > 0) {
+      banner.style.background = "var(--bad-bg)";
+      banner.style.color = "var(--bad)";
+      bannerText.textContent = `Result: Needs Remediation (Failed in ${res.failed} course${res.failed > 1 ? 's':''}). Calculated SGPA: ${res.sgpa.toFixed(2)}.`;
+    } else {
+      banner.style.background = "var(--ok-bg)";
+      banner.style.color = "var(--ok)";
+      bannerText.textContent = `Result: PASSED &middot; Conferred Grade: ${res.overallGrade} &middot; Semester SGPA: ${res.sgpa.toFixed(2)} / 10.00.`;
+    }
+  }
+
+  // --- 5. Results & Rankings View ---
+  renderResults() {
+    const q = (document.getElementById("rankSearch").value || "").toLowerCase();
+    const status = document.getElementById("rankFilterStatus").value;
+    const cohort = this.getRankedCohort();
+
+    let filtered = cohort.filter(r => {
+      const matchQ = (r.student.n || "").toLowerCase().includes(q) || (r.student.e || "").toLowerCase().includes(q);
+      const matchStatus = status === "ALL" ? true : r.eval.resultStatus === status;
+      return matchQ && matchStatus;
+    });
+
+    const sort = this.sortConfig.results;
+    filtered.sort((a, b) => {
+      let valA, valB;
+      if (sort.key === "rank") {
+        valA = a.rank || 99999;
+        valB = b.rank || 99999;
+        return sort.dir === "asc" ? valA - valB : valB - valA;
+      } else if (sort.key === "n") {
+        return sort.dir === "asc" ? a.student.n.localeCompare(b.student.n) : b.student.n.localeCompare(a.student.n);
+      } else if (sort.key === "sgpa") {
+        valA = a.eval.sgpa || -1;
+        valB = b.eval.sgpa || -1;
+        return sort.dir === "asc" ? valA - valB : valB - valA;
+      } else if (sort.key === "pct") {
+        valA = a.eval.aggPct || -1;
+        valB = b.eval.aggPct || -1;
+        return sort.dir === "asc" ? valA - valB : valB - valA;
+      }
+      return 0;
+    });
+
+    const total = filtered.length;
+    const page = this.pagination.results.page;
+    const limit = this.pagination.results.limit;
+    const totalPages = Math.ceil(total / limit) || 1;
+    const paged = filtered.slice((page - 1) * limit, page * limit);
+
+    const tbody = document.getElementById("rankBody");
+    if (paged.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:28px; color:var(--ink-secondary);">No results match current search criteria.</td></tr>`;
+    } else {
+      tbody.innerHTML = paged.map(r => `
+        <tr>
+          <td>${r.rank ? `<span class="badge ${r.rank === 1 ? 'badge-pass' : 'badge-grade'}">#${r.rank}</span>` : '&ndash;'}</td>
+          <td style="font-weight:600;">${r.student.n}</td>
+          <td class="mono">${r.student.e}</td>
+          <td>${r.student.s || "CSBS-A"}</td>
+          <td class="mono">${r.eval.totalObt} / ${r.eval.totalMax}</td>
+          <td class="mono" style="font-weight:600;">${r.eval.aggPct.toFixed(2)}%</td>
+          <td class="mono" style="font-weight:700; color:var(--navy);">${r.eval.sgpa !== null ? r.eval.sgpa.toFixed(2) : '--'}</td>
+          <td>${r.eval.overallGrade ? `<span class="badge badge-grade">${r.eval.overallGrade}</span>` : '&ndash;'}</td>
+          <td>
+            <span class="badge ${r.eval.resultStatus === 'PASS' ? 'badge-pass' : r.eval.resultStatus === 'FAIL' ? 'badge-fail' : 'badge-inc'}">
+              ${r.eval.resultStatus}
+            </span>
+          </td>
+          <td style="text-align:right;">
+            <button class="btn btn-sm" onclick="acadex.exportStudentPdf(${r.index})">Download PDF</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    document.getElementById("rankTableFooter").innerHTML = `
+      <div>Showing ${(page - 1) * limit + (total ? 1 : 0)} to ${Math.min(page * limit, total)} of ${total} entries</div>
+      <div class="pagination-controls">
+        <button class="page-btn" onclick="acadex.changePage('results', -1)" ${page === 1 ? 'disabled':''}>&larr; Prev</button>
+        <span style="padding: 0 4px;">Page ${page} of ${totalPages}</span>
+        <button class="page-btn" onclick="acadex.changePage('results', 1)" ${page >= totalPages ? 'disabled':''}>Next &rarr;</button>
+      </div>
+    `;
+  }
+
+  clearResultsFilters() {
+    document.getElementById("rankSearch").value = "";
+    document.getElementById("rankFilterStatus").value = "ALL";
+    this.pagination.results.page = 1;
+    this.renderResults();
+  }
+
+  // --- 6. Dedicated Student Portal ---
+  renderStudentPortal() {
+    const st = this.state.students[this.state.selectedStudent] || this.state.students[0];
+    if (!st) return;
+
+    const res = this.evaluateStudent(st);
+
+    document.getElementById("portalCandidateName").textContent = st.n;
+    document.getElementById("portalEnrollment").textContent = st.e;
+    document.getElementById("portalSection").textContent = st.s || "CSBS-A";
+
+    document.getElementById("portalMarks").textContent = `${res.totalObt} / ${res.totalMax}`;
+    document.getElementById("portalPct").textContent = `${res.aggPct.toFixed(2)}%`;
+    document.getElementById("portalSGPA").textContent = res.sgpa !== null ? res.sgpa.toFixed(2) : "INCOMPLETE";
+    document.getElementById("portalGrade").textContent = res.overallGrade || "--";
+
+    const tbody = document.getElementById("portalCoursesBody");
+    tbody.innerHTML = this.state.subjects.map((sub, i) => {
+      const row = res.details[i];
+      return `
+        <tr>
+          <td class="mono" style="font-weight:700; color:var(--navy);">${sub.code}</td>
+          <td style="font-weight:600;">${sub.n}</td>
+          <td class="mono">${sub.m}</td>
+          <td class="mono" style="font-weight:700;">${row.val !== null ? row.val : '&ndash;'}</td>
+          <td class="mono">${sub.c}</td>
+          <td class="mono">${row.p !== null ? row.p.toFixed(2) + '%' : '&ndash;'}</td>
+          <td>${row.g ? `<span class="badge badge-grade ${row.gp === 0 ? 'fail' : ''}">${row.g}</span>` : '&ndash;'}</td>
+          <td class="mono" style="font-weight:700;">${row.gp !== null ? row.gp : '&ndash;'}</td>
+          <td>
+            ${row.status === 'PASS' ? '<span class="badge badge-pass">Qualified</span>' :
+              row.status === 'FAIL' ? '<span class="badge badge-fail">Remedial</span>' :
+              '<span class="badge badge-inc">Pending</span>'}
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  // --- 7. Analytics View ---
+  renderAnalytics() {
+    const tbody = document.getElementById("analyticsBody");
+    const remedial = [];
+
+    tbody.innerHTML = this.state.subjects.map((sub, sIdx) => {
+      const scores = [];
+      let passCount = 0;
+
+      this.state.students.forEach(st => {
+        const val = st.k ? st.k[sIdx] : null;
+        if (val !== "" && val !== null && !isNaN(val)) {
+          const num = Number(val);
+          scores.push(num);
+          const p = (num / sub.m) * 100;
+          if (p >= 40) passCount++;
+          else remedial.push({ st: st.n, e: st.e, sub: sub.n, marks: num, max: sub.m });
+        }
+      });
+
+      const count = scores.length;
+      const avg = count > 0 ? (scores.reduce((a, b) => a + b, 0) / count) : null;
+      const avgPct = avg !== null ? (avg / sub.m) * 100 : null;
+      const highest = count > 0 ? Math.max(...scores) : null;
+      const lowest = count > 0 ? Math.min(...scores) : null;
+      const passRate = count > 0 ? (passCount / count) * 100 : null;
+
+      return `
+        <tr>
+          <td class="mono" style="font-weight:700;">${sub.code}</td>
+          <td style="font-weight:600;">${sub.n}</td>
+          <td class="mono">${sub.m}</td>
+          <td class="mono">${sub.c}</td>
+          <td class="mono">${count} / ${this.state.students.length}</td>
+          <td class="mono" style="font-weight:600;">${avgPct !== null ? avgPct.toFixed(1) + '%' : '&ndash;'}</td>
+          <td class="mono" style="color:var(--ok); font-weight:600;">${highest !== null ? highest : '&ndash;'}</td>
+          <td class="mono" style="color:var(--bad); font-weight:600;">${lowest !== null ? lowest : '&ndash;'}</td>
+          <td>
+            ${passRate !== null ? `
+              <span class="badge ${passRate >= 75 ? 'badge-pass' : passRate >= 50 ? 'badge-inc' : 'badge-fail'}">
+                ${passRate.toFixed(1)}%
+              </span>` : '&ndash;'}
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    const cohort = this.getRankedCohort();
+    const completed = cohort.filter(r => r.eval.isComplete);
+    const passCnt = completed.filter(r => r.eval.resultStatus === "PASS").length;
+    const failCnt = completed.filter(r => r.eval.resultStatus === "FAIL").length;
+    const pendingCnt = cohort.length - completed.length;
+
+    document.getElementById("analyticsPassFail").innerHTML = `
+      <div style="display:flex; flex-direction:column; gap:9px; font-size:12.5px;">
+        <div style="display:flex; justify-content:space-between;">
+          <span>Qualified (Pass)</span>
+          <strong>${passCnt} (${completed.length ? ((passCnt / completed.length) * 100).toFixed(1) : 0}%)</strong>
+        </div>
+        <div class="dist-track"><div class="dist-fill" style="background:var(--ok); width:${completed.length ? (passCnt / completed.length) * 100 : 0}%;"></div></div>
+
+        <div style="display:flex; justify-content:space-between; margin-top:4px;">
+          <span>Remediation Required</span>
+          <strong>${failCnt} (${completed.length ? ((failCnt / completed.length) * 100).toFixed(1) : 0}%)</strong>
+        </div>
+        <div class="dist-track"><div class="dist-fill f" style="width:${completed.length ? (failCnt / completed.length) * 100 : 0}%;"></div></div>
+
+        <div style="display:flex; justify-content:space-between; margin-top:4px;">
+          <span>Evaluation Pending</span>
+          <strong>${pendingCnt}</strong>
+        </div>
+        <div class="dist-track"><div class="dist-fill" style="background:var(--gold); width:${cohort.length ? (pendingCnt / cohort.length) * 100 : 0}%;"></div></div>
+      </div>
+    `;
+
+    const remedialContainer = document.getElementById("analyticsRemedial");
+    if (remedial.length === 0) {
+      remedialContainer.innerHTML = `<p style="font-size:12.5px; color:var(--ok); margin:0;">All evaluated candidates have scored above the mandatory passing threshold (&ge; 40%).</p>`;
+    } else {
+      remedialContainer.innerHTML = `
+        <ul style="padding-left:16px; margin:0; font-size:12.5px; line-height:1.7;">
+          ${remedial.map(item => `
+            <li><strong>${item.st}</strong> (${item.e}) &ndash; Scored ${item.marks}/${item.max} in ${item.sub}</li>
+          `).join("")}
+        </ul>
+      `;
+    }
+  }
+
+  // --- 8. Grading Scale View ---
+  renderGrading() {
+    const tbody = document.getElementById("gradingBody");
+    tbody.innerHTML = this.state.scale.map((s, i) => `
+      <tr>
+        <td><span class="badge badge-grade ${s.gp === 0 ? 'fail' : ''}">${s.g}</span></td>
+        <td>
+          ${i === this.state.scale.length - 1 ? `
+            <span style="color:var(--ink-secondary); font-size:12px;">Below ${this.state.scale[i-1].min}%</span>
+          ` : `
+            <input type="number" min="0" max="100" class="input input-sm mono" style="width:75px;"
+              value="${s.min}" onchange="acadex.updateScaleMin(${i}, this.value)">
+          `}
+        </td>
+        <td class="mono" style="font-weight:700;">${s.gp}</td>
+        <td>
+          <input type="text" class="input input-sm" value="${s.r}" onchange="acadex.updateScaleRemark(${i}, this.value)">
+        </td>
+        <td style="text-align:right;">
+          <span class="badge" style="background:var(--surface-alt);">Active</span>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  updateScaleMin(i, val) {
+    this.state.scale[i].min = parseFloat(val) || 0;
+    this.logAudit("GRADING_SCHEME_CHANGED", this.state.scale[i].g, `Adjusted minimum percentage threshold to ${val}%`);
+    this.saveState();
+    this.render();
+    this.toast("Grading scheme updated.", "info");
+  }
+
+  updateScaleRemark(i, val) {
+    this.state.scale[i].r = val;
+    this.saveState();
+  }
+
+  resetGradingScale() {
+    this.confirm("Reset Grading Scheme", "Reset grading scale to the standard 10-point institute ordinance?", () => {
+      this.state.scale = JSON.parse(JSON.stringify(INITIAL_DATA.scale));
+      this.logAudit("GRADING_SCHEME_RESET", "Scale", "Restored standard 10-point ordinance thresholds.");
+      this.saveState();
+      this.render();
+      this.toast("Grading scale restored to defaults.", "info");
+    });
+  }
+
+  // --- 9. Audit Log View ---
+  renderAudit() {
+    const tbody = document.getElementById("auditBody");
+    const logs = this.state.auditLogs || [];
+    if (logs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:24px; color:var(--ink-secondary);">No audit records recorded yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = logs.map(l => `
+      <tr>
+        <td class="mono" style="font-size:11.5px; color:var(--ink-secondary);">${l.time}</td>
+        <td><span class="badge" style="background:var(--surface-alt); font-size:10px;">${l.user}</span></td>
+        <td class="mono" style="font-weight:600; font-size:11.5px; color:var(--navy);">${l.action}</td>
+        <td style="font-weight:500;">${l.target}</td>
+        <td style="font-size:12px; color:var(--ink-secondary);">${l.details}</td>
+      </tr>
+    `).join("");
+  }
+
+  clearAuditLogs() {
+    this.confirm("Clear Audit Trail", "Are you sure you want to clear stored audit logs?", () => {
+      this.state.auditLogs = [];
+      this.saveState();
+      this.renderAudit();
+      this.toast("Audit trail cleared.", "info");
+    });
+  }
+
+  // --- CSV Export Utilities (Formula Injection Hardened) ---
+  sanitizeCsvCell(v) {
+    let str = String(v === null || v === undefined ? "" : v);
+    if (/^[=+\-@|]/.test(str)) str = "'" + str;
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+
+  downloadBlob(filename, text, mime = "text/csv;charset=utf-8;") {
+    const blob = new Blob([text], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    this.toast(`Downloaded ${filename}`, "success");
+  }
+
+  exportStudentsCsv() {
+    const headers = ["Enrollment Number", "Candidate Name", "Section", "Department", "Email"];
+    const rows = this.state.students.map(s => [s.e, s.n, s.s || "CSBS-A", "CSBS", s.email || ""]);
+    const csv = [headers.map(this.sanitizeCsvCell).join(",")]
+      .concat(rows.map(r => r.map(this.sanitizeCsvCell).join(",")))
+      .join("\r\n");
+    this.downloadBlob("Acadex_Students_Directory.csv", csv);
+  }
+
+  exportResultsCsv() {
+    const cohort = this.getRankedCohort();
+    const headers = [
+      "Rank", "Candidate Name", "Enrollment", "Section",
+      ...this.state.subjects.map(s => `${s.n} (${s.code})`),
+      "Aggregate Marks", "Max Marks", "Percentage", "SGPA", "Grade", "Status"
+    ];
+
+    const rows = cohort.map(r => [
+      r.rank || "",
+      r.student.n,
+      r.student.e,
+      r.student.s || "CSBS-A",
+      ...this.state.subjects.map((_, i) => (r.student.k && r.student.k[i] !== "" && r.student.k[i] !== null) ? r.student.k[i] : ""),
+      r.eval.totalObt,
+      r.eval.totalMax,
+      r.eval.isComplete ? r.eval.aggPct.toFixed(2) : "",
+      r.eval.sgpa !== null ? r.eval.sgpa.toFixed(2) : "",
+      r.eval.overallGrade || "",
+      r.eval.resultStatus
+    ]);
+
+    const csv = [headers.map(this.sanitizeCsvCell).join(",")]
+      .concat(rows.map(r => r.map(this.sanitizeCsvCell).join(",")))
+      .join("\r\n");
+    this.downloadBlob("Acadex_Merit_Register.csv", csv);
+  }
+
+  exportJsonBackup() {
+    const str = JSON.stringify(this.state, null, 2);
+    this.downloadBlob("Acadex_System_Backup.json", str, "application/json");
+  }
+
+  importJsonBackup(e) {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = (ev) => {
+      try {
+        const p = JSON.parse(ev.target.result);
+        if (p.students && p.subjects && p.scale) {
+          this.state = p;
+          this.logAudit("SYSTEM_RESTORE", "JSON File", "Full system restoration from backup archive.");
+          this.saveState();
+          this.render();
+          this.toast("System backup restored successfully!", "success");
+        } else {
+          this.toast("Invalid backup file schema.", "error");
+        }
+      } catch (err) {
+        this.toast("Failed to parse JSON file.", "error");
+      }
+    };
+    r.readAsText(f);
+  }
+
+  reloadDemoData() {
+    this.confirm("Reload Demo Data", "Load standard 5 evaluated candidates for demonstration?", () => {
+      this.state.students = JSON.parse(JSON.stringify(INITIAL_DATA.students));
+      this.state.subjects = JSON.parse(JSON.stringify(INITIAL_DATA.subjects));
+      this.state.selectedStudent = 0;
+      this.logAudit("DEMO_DATA_LOAD", "Cohort", "Loaded 5 sample candidates.");
+      this.saveState();
+      this.render();
+      this.toast("Demo cohort loaded successfully.", "info");
+    });
+  }
+
+  confirmWipeAll() {
+    this.confirm("Wipe All Records", "Warning: This will delete all candidates and marks records. Proceed?", () => {
+      this.state.students = [];
+      this.state.selectedStudent = 0;
+      this.logAudit("WIPE_ALL_DATA", "Database", "Erased all candidate and evaluation records.");
+      this.saveState();
+      this.render();
+      this.toast("All student records erased.", "warning");
+    });
+  }
+
+  // --- Official PDF Transcript (jsPDF Native) ---
+  exportCurrentStudentPdf() {
+    this.exportStudentPdf(this.state.selectedStudent);
+  }
+
+  exportStudentPdf(idx) {
+    const jsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!jsPDF) {
+      this.toast("PDF engine initializing. Please wait...", "warning");
+      return;
+    }
+
+    const st = this.state.students[idx];
+    if (!st) return;
+    const res = this.evaluateStudent(st);
+
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const width = doc.internal.pageSize.getWidth();
+
+    // Institutional Navy Banner
+    doc.setFillColor(18, 53, 91);
+    doc.rect(0, 0, width, 95, "F");
+    doc.setFillColor(198, 138, 27); // Gold trim
+    doc.rect(0, 95, width, 4, "F");
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("MADHAV INSTITUTE OF TECHNOLOGY & SCIENCE, GWALIOR", 40, 38);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10.5);
+    doc.text("Deemed to be University | B.Tech Semester I Grade Transcript", 40, 58);
+    doc.setFontSize(9);
+    doc.text("Autonomous Institute (Estd. 1957) &middot; NAAC A++ Accredited &middot; Powered by Acadex", 40, 74);
+
+    if (this.state.isPublished) {
+      doc.setFontSize(8.5);
+      doc.setTextColor(198, 138, 27);
+      doc.text("CERTIFIED & OFFICIALLY PUBLISHED", width - 210, 74);
+    }
+
+    doc.setTextColor(31, 41, 55);
+    let y = 130;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("CANDIDATE GRADE EVALUATION REPORT", 40, y);
+    y += 18;
+
+    const info = [
+      ["Candidate Name", st.n],
+      ["Enrollment No.", st.e],
+      ["Branch / Programme", "Computer Science & Business Systems (CSBS)"],
+      ["Section / Semester", `${st.s || "CSBS-A"} / Semester I (2024-25)`],
+      ["Date of Issue", new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })]
+    ];
+
+    doc.setFontSize(9.5);
+    info.forEach(([k, v]) => {
+      doc.setFont("helvetica", "bold");
+      doc.text(k + ":", 40, y);
+      doc.setFont("helvetica", "normal");
+      doc.text(String(v), 160, y);
+      y += 15;
+    });
+
+    const tableData = this.state.subjects.map((sub, i) => {
+      const row = res.details[i];
+      return [
+        sub.code,
+        sub.n,
+        String(sub.m),
+        row.val !== null ? String(row.val) : "--",
+        String(sub.c),
+        row.p !== null ? row.p.toFixed(2) + "%" : "--",
+        row.g || "--",
+        row.gp !== null ? String(row.gp) : "--",
+        row.status
+      ];
+    });
+
+    doc.autoTable({
+      startY: y + 10,
+      head: [["Course Code", "Course Title", "Max", "Scored", "Credits", "Percent", "Grade", "GP", "Status"]],
+      body: tableData,
+      theme: "grid",
+      headStyles: { fillColor: [18, 53, 91], textColor: [255, 255, 255], fontStyle: "bold", fontSize: 9 },
+      styles: { fontSize: 8.5, cellPadding: 5 },
+      columnStyles: {
+        0: { cellWidth: 70, fontStyle: "bold" },
+        1: { cellWidth: 170 },
+        8: { fontStyle: "bold" }
+      },
+      margin: { left: 40, right: 40 }
+    });
+
+    y = doc.lastAutoTable.finalY + 22;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("EXAMINATION RESULT SUMMARY", 40, y);
+    y += 16;
+
+    const summary = [
+      ["Aggregate Marks Scored", `${res.totalObt} / ${res.totalMax}`],
+      ["Cumulative Percentage", `${res.aggPct.toFixed(2)}%`],
+      ["Semester Grade Point Average (SGPA)", res.sgpa !== null ? `${res.sgpa.toFixed(2)} / 10.00` : "INCOMPLETE EVALUATION"],
+      ["Conferred Qualitative Grade", res.overallGrade || "--"],
+      ["Examination Status", res.resultStatus]
+    ];
+
+    summary.forEach(([k, v]) => {
+      doc.setFont("helvetica", "bold");
+      doc.text(k + ":", 40, y);
+      doc.setFont("helvetica", "normal");
+      doc.text(v, 250, y);
+      y += 14;
+    });
+
+    const sigY = 750;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.text("Controller of Examinations", 40, sigY);
+    doc.text("Dean (Academics)", width / 2 - 35, sigY);
+    doc.text("Head of Department (CSBS)", width - 170, sigY);
+
+    const safe = (st.n || "Candidate").replace(/[^a-zA-Z0-9_-]/g, "_");
+    doc.save(`Transcript_${st.e}_${safe}.pdf`);
+  }
+
+  exportClassResultsPdf() {
+    const jsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!jsPDF) {
+      this.toast("PDF engine initializing...", "warning");
+      return;
+    }
+
+    const doc = new jsPDF({ unit: "pt", format: "a4", orientation: "landscape" });
+    const width = doc.internal.pageSize.getWidth();
+
+    doc.setFillColor(18, 53, 91);
+    doc.rect(0, 0, width, 60, "F");
+    doc.setFillColor(198, 138, 27);
+    doc.rect(0, 60, width, 3, "F");
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(15);
+    doc.text("MADHAV INSTITUTE OF TECHNOLOGY & SCIENCE, GWALIOR", 40, 30);
+    doc.setFontSize(9.5);
+    doc.setFont("helvetica", "normal");
+    doc.text("Official Class Merit Tabulation & Grade Register - Acadex 2.0 &middot; Semester I (2024-25)", 40, 46);
+
+    const cohort = this.getRankedCohort();
+    const rows = cohort.map(r => [
+      r.rank ? `#${r.rank}` : "--",
+      r.student.e,
+      r.student.n,
+      r.student.s || "CSBS-A",
+      `${r.eval.totalObt} / ${r.eval.totalMax}`,
+      r.eval.aggPct.toFixed(2) + "%",
+      r.eval.sgpa !== null ? r.eval.sgpa.toFixed(2) : "--",
+      r.eval.overallGrade || "--",
+      r.eval.resultStatus
+    ]);
+
+    doc.autoTable({
+      startY: 80,
+      head: [["Rank", "Enrollment", "Candidate Name", "Section", "Total Scored", "%", "SGPA", "Grade", "Status"]],
+      body: rows,
+      theme: "grid",
+      headStyles: { fillColor: [18, 53, 91], textColor: [255, 255, 255], fontStyle: "bold" },
+      styles: { fontSize: 8.5, cellPadding: 4 },
+      margin: { left: 40, right: 40 }
+    });
+
+    doc.save("Acadex_Official_Class_Merit_Register.pdf");
+  }
+}
+
+// Global bootstrap
+let acadex;
+window.addEventListener("DOMContentLoaded", () => {
+  acadex = new AcadexEngine();
+  window.acadex = acadex;
+});
+</script>
+</body>
+</html>
