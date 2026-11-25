@@ -219,19 +219,22 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  width: 100%;
 }
 .role-badge {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  padding: 2px 7px;
+  padding: 3px 7px;
   border-radius: 4px;
   background: var(--navy);
   color: #fff;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .role-select {
-  font-size: 11.5px;
+  font-size: 11px;
   padding: 3px 6px;
   border-radius: 4px;
   border: 1px solid var(--border);
@@ -239,6 +242,9 @@ body {
   color: var(--ink-primary);
   cursor: pointer;
   font-family: inherit;
+  flex: 1;
+  min-width: 0;
+  outline: none;
 }
 
 /* Main Area */
@@ -1378,7 +1384,7 @@ html, body {
           </svg>
         </button>
         <h1 class="page-heading" id="pageHeadingTitle">Academic Dashboard</h1>
-        <span class="meta-chip">Sem I &middot; 2024-25 &middot; CSBS</span>
+        <span class="meta-chip">Sem I &middot; 2024-25 &middot; CSE</span>
         <span class="pub-badge draft" id="topPublicationBadge">Evaluation In Progress</span>
       </div>
       <div class="topbar-right">
@@ -2255,12 +2261,14 @@ html, body {
  * ACADEX &middot; Autonomous Grade Evaluation & Merit System 2.0
  * Architecture: Clean, Centralized, Tested, Zero-Dependency Client Logic
  */
-const STORAGE_KEY = "acadex_v2_store";
+const STORAGE_KEY = "acadex_v2_1_store";
 
 const INITIAL_DATA = {
+  version: "2.1.0",
   isPublished: false,
   currentRole: "ADMIN",
   selectedStudent: 0,
+  activeTeacherId: "TCH-CS-101",
   scale: [
     { g: "A+", min: 90, gp: 10, r: "Outstanding" },
     { g: "A",  min: 80, gp: 9,  r: "Excellent" },
@@ -2272,22 +2280,67 @@ const INITIAL_DATA = {
     { g: "F",  min: 0,  gp: 0,  r: "Fail" }
   ],
   subjects: [
-    { n: "Digital Logic Design", code: "CS101", m: 100, c: 4, t: "Theory" },
-    { n: "Engineering Mathematics I", code: "MA101", m: 100, c: 4, t: "Theory" },
-    { n: "Programming in C", code: "CS102", m: 100, c: 3, t: "Theory" },
-    { n: "Engineering Physics", code: "PH101", m: 100, c: 3, t: "Theory" },
-    { n: "Communication Skills", code: "HS101", m: 100, c: 2, t: "Theory" },
-    { n: "C Programming Lab", code: "CS102L", m: 50, c: 2, t: "Practical" }
+    { n: "Engineering Mathematics-I", code: "MTH101", m: 100, c: 4, t: "Theory" },
+    { n: "Engineering Physics", code: "PHY101", m: 100, c: 4, t: "Theory" },
+    { n: "Engineering Chemistry", code: "CHE101", m: 100, c: 3, t: "Theory" },
+    { n: "Programming for Problem Solving", code: "CSE101", m: 100, c: 4, t: "Theory" },
+    { n: "Basic Electrical and Electronics", code: "ECE101", m: 100, c: 3, t: "Theory" },
+    { n: "Engineering Mechanics", code: "MEC101", m: 100, c: 3, t: "Theory" },
+    { n: "Communication Skills", code: "ENG101", m: 100, c: 2, t: "Theory" }
   ],
   students: [
-    { n: "Aarav Sharma",  e: "0901CS261001", s: "CSBS-A", email: "aarav@mits.ac.in", k: [88, 92, 85, 90, 78, 44] },
-    { n: "Diya Verma",    e: "0901CS261002", s: "CSBS-A", email: "diya@mits.ac.in",  k: [76, 81, 69, 74, 72, 38] },
-    { n: "Kabir Singh",   e: "0901CS261003", s: "CSBS-A", email: "kabir@mits.ac.in", k: [58, 47, 62, 51, 55, 25] },
-    { n: "Meera Joshi",   e: "0901CS261004", s: "CSBS-A", email: "meera@mits.ac.in", k: [95, 91, 97, 93, 89, 50] },
-    { n: "Rohan Gupta",   e: "0901CS261005", s: "CSBS-A", email: "rohan@mits.ac.in", k: [38, 52, 44, 60, 48, 20] }
+    { n: "Ananya Verma",     e: "0901CS241002", s: "CSE-A", dept: "Computer Science and Engineering", email: "ananya.verma@mitsgwalior.in",    k: [96, 94, 92, 98, 91, 89, 95] },
+    { n: "Aarav Sharma",     e: "0901CS241001", s: "CSE-A", dept: "Computer Science and Engineering", email: "aarav.sharma@mitsgwalior.in",    k: [94, 91, 88, 96, 90, 85, 92] },
+    { n: "Ishita Agarwal",   e: "0901CS241010", s: "CSE-A", dept: "Computer Science and Engineering", email: "ishita.agarwal@mitsgwalior.in",  k: [93, 89, 91, 94, 88, 84, 90] },
+    { n: "Aditya Mishra",    e: "0901CS241005", s: "CSE-A", dept: "Computer Science and Engineering", email: "aditya.mishra@mitsgwalior.in",   k: [91, 88, 85, 95, 87, 80, 89] },
+    { n: "Priya Singh",      e: "0901CS241004", s: "CSE-A", dept: "Computer Science and Engineering", email: "priya.singh@mitsgwalior.in",     k: [89, 86, 90, 93, 85, 82, 88] },
+    { n: "Simran Kaur",      e: "0901CS241016", s: "CSE-B", dept: "Computer Science and Engineering", email: "simran.kaur@mitsgwalior.in",     k: [90, 87, 89, 92, 86, 81, 88] },
+    { n: "Neha Choudhary",   e: "0901CS241012", s: "CSE-B", dept: "Computer Science and Engineering", email: "neha.choudhary@mitsgwalior.in",  k: [88, 85, 82, 91, 84, 78, 86] },
+    { n: "Kavya Joshi",      e: "0901CS241008", s: "CSE-A", dept: "Computer Science and Engineering", email: "kavya.joshi@mitsgwalior.in",     k: [85, 81, 79, 90, 82, 76, 84] },
+    { n: "Aditi Saxena",     e: "0901CS241014", s: "CSE-B", dept: "Computer Science and Engineering", email: "aditi.saxena@mitsgwalior.in",    k: [84, 80, 86, 89, 81, 75, 83] },
+    { n: "Pooja Rathore",    e: "0901CS241020", s: "CSE-B", dept: "Computer Science and Engineering", email: "pooja.rathore@mitsgwalior.in",   k: [81, 78, 83, 87, 80, 75, 82] },
+    { n: "Sneha Patel",      e: "0901CS241006", s: "CSE-A", dept: "Computer Science and Engineering", email: "sneha.patel@mitsgwalior.in",     k: [82, 79, 84, 86, 78, 74, 80] },
+    { n: "Rohan Gupta",      e: "0901CS241003", s: "CSE-A", dept: "Computer Science and Engineering", email: "rohan.gupta@mitsgwalior.in",     k: [78, 82, 75, 88, 79, 72, 85] },
+    { n: "Riya Thakur",      e: "0901CS241018", s: "CSE-B", dept: "Computer Science and Engineering", email: "riya.thakur@mitsgwalior.in",     k: [77, 80, 76, 85, 78, 71, 82] },
+    { n: "Kunal Jain",       e: "0901CS241011", s: "CSE-B", dept: "Computer Science and Engineering", email: "kunal.jain@mitsgwalior.in",      k: [75, 78, 72, 83, 76, 70, 78] },
+    { n: "Rahul Mehta",      e: "0901CS241007", s: "CSE-A", dept: "Computer Science and Engineering", email: "rahul.mehta@mitsgwalior.in",     k: [72, 68, 74, 79, 70, 66, 75] },
+    { n: "Siddharth Tiwari", e: "0901CS241013", s: "CSE-B", dept: "Computer Science and Engineering", email: "siddharth.tiwari@mitsgwalior.in",k: [68, 64, 70, 75, 66, 62, 71] },
+    { n: "Arjun Yadav",      e: "0901CS241009", s: "CSE-A", dept: "Computer Science and Engineering", email: "arjun.yadav@mitsgwalior.in",     k: [65, 70, 68, 76, 64, 61, 72] },
+    { n: "Harsh Vardhan",    e: "0901CS241015", s: "CSE-B", dept: "Computer Science and Engineering", email: "harsh.vardhan@mitsgwalior.in",   k: [58, 62, 55, 68, 60, 52, 65] },
+    { n: "Manav Shah",       e: "0901CS241017", s: "CSE-B", dept: "Computer Science and Engineering", email: "manav.shah@mitsgwalior.in",      k: [52, 56, 50, 62, 54, 48, 58] },
+    { n: "Abhishek Soni",    e: "0901CS241019", s: "CSE-B", dept: "Computer Science and Engineering", email: "abhishek.soni@mitsgwalior.in",   k: [45, 48, 42, 55, 46, 32, 50] }
+  ],
+  teachers: [
+    {
+      id: "TCH-CS-101",
+      n: "Dr. Alok Verma",
+      email: "alok.verma@mitsgwalior.in",
+      dept: "Computer Science and Engineering",
+      subjects: ["CSE101", "MTH101"],
+      sections: ["CSE-A", "CSE-B"],
+      status: "Active"
+    },
+    {
+      id: "TCH-PH-102",
+      n: "Prof. Sunita Rao",
+      email: "sunita.rao@mitsgwalior.in",
+      dept: "Applied Physics",
+      subjects: ["PHY101", "ECE101"],
+      sections: ["CSE-A"],
+      status: "Active"
+    },
+    {
+      id: "TCH-ME-103",
+      n: "Er. Rajesh Kothari",
+      email: "rajesh.kothari@mitsgwalior.in",
+      dept: "Mechanical Engineering",
+      subjects: ["MEC101", "CHE101", "ENG101"],
+      sections: ["CSE-B"],
+      status: "Active"
+    }
   ],
   auditLogs: [
-    { time: new Date().toLocaleString("en-IN"), user: "SYSTEM", action: "SYSTEM_INITIALIZE", target: "Acadex 2.0 Engine", details: "Core CBCS grading scheme registered with 6 curriculum papers." }
+    { time: new Date().toLocaleString("en-IN"), user: "SYSTEM", action: "SYSTEM_INITIALIZE", target: "Acadex 2.0 Engine", details: "Core autonomous CBCS grading scheme registered with 7 engineering papers and 20 candidates." }
   ]
 };
 
@@ -2357,7 +2410,11 @@ class AcadexEngine {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && Array.isArray(parsed.students) && Array.isArray(parsed.subjects)) {
+        if (parsed && Array.isArray(parsed.students) && parsed.students.length >= 15 && Array.isArray(parsed.subjects) && parsed.subjects.length === 7) {
+          if (!parsed.teachers || parsed.teachers.length === 0) {
+            parsed.teachers = INITIAL_DATA.teachers;
+            parsed.activeTeacherId = INITIAL_DATA.activeTeacherId;
+          }
           return parsed;
         }
       }
@@ -3818,8 +3875,6 @@ class AcadexEngine {
 
     doc.save("Acadex_Official_Class_Merit_Register.pdf");
   }
-}
-
 
   // ================= USER MANAGEMENT & RBAC ENGINE =================
   getActiveTeacher() {
@@ -4250,6 +4305,7 @@ class AcadexEngine {
     this.state.selectedStudent = studentIdx;
     this.navTo("marks");
   }
+}
 
 // Global bootstrap
 let acadex;
