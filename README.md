@@ -182,4 +182,23 @@ To eliminate unsightly white flashes (FOUC) when loading in dark mode, an inline
 
 ---
 
+## 7. Mobile Responsiveness & Multi-Device Usability
+
+Acadex 2.0 incorporates a dedicated mobile design system optimized across viewports from 320px to 4K displays:
+
+### 1. Touch-Optimized Navigation Drawer
+- **Collapsible Drawer (`≤ 860px`)**: Transformed into an off-canvas drawer with smooth cubic-bezier transitions (`0.28s`) and soft backdrop shadow.
+- **Backdrop Overlay (`#sidebarBackdrop`)**: Tapping outside the navigation drawer automatically closes it and restores background page scrolling.
+- **Mobile Menu Trigger**: High-contrast SVG hamburger icon with touch target sizing (`36x36px`, minimum 44px interaction envelope).
+- **Auto-Close on Selection**: Tapping any navigation link (`Dashboard`, `Students`, `Marks`, `Results`, `Analytics`) automatically closes the drawer on mobile devices.
+- **Dedicated Close Button (`✕`)**: Accessible close button inside the sidebar header for tactile touch dismiss.
+
+### 2. Viewport-Adaptive Grids & Cards
+- **Metric Cards (`metrics-grid`)**: Adapts dynamically from a 5-column layout on desktops to a 2-column grid on standard smartphones (`375px–430px`) and 1-column on compact phones (`320px–360px`).
+- **Stacked Filters & Search Toolbars**: Search input and section filters expand to full width on mobile devices with touch-friendly input heights (`40px`).
+- **Responsive Table Containers**: Horizontal touch scrolling with visual indicators (`.table-scroll-hint`) to prevent layout clipping while preserving complete academic records.
+- **Card-Style Mobile Modals**: Popups scale gracefully with `max-width: 95%`, internal scrolling, and full-width stacked action buttons for single-thumb confirmation.
+
+---
+
 *ACADEX &middot; Autonomous Grade Evaluation & Merit System 2.0*
