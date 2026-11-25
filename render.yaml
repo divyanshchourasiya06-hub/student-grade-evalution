@@ -1,0 +1,13 @@
+# Render Infrastructure Blueprint
+# Student Grade Evaluation System (Acadex 2.0 / Gradely)
+services:
+  # Primary Static Web Application (Zero-dependency, high performance)
+  - type: web
+    name: gradely-academic-portal
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
