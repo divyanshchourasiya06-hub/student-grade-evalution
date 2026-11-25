@@ -614,6 +614,96 @@ html[data-theme="dark"] .btn-primary {
   background: var(--bad-bg);
 }
 
+/* User Management & Sub-Tabs */
+.sub-tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+  padding-bottom: 0;
+}
+.sub-tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-secondary);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.sub-tab-btn:hover {
+  color: var(--ink-primary);
+  background: var(--surface-alt);
+}
+.sub-tab-btn.active {
+  color: var(--navy);
+  border-bottom-color: var(--navy);
+  background: var(--navy-light);
+}
+
+.badge-active {
+  background: var(--ok-bg);
+  color: var(--ok);
+  border: 1px solid var(--ok-border);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.badge-inactive {
+  background: var(--bad-bg);
+  color: var(--bad);
+  border: 1px solid var(--bad-border);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Teacher Scope Banner */
+.teacher-scope-banner {
+  background: var(--navy-light);
+  border: 1px solid var(--navy-border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.teacher-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--navy-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+html[data-theme="dark"] .teacher-scope-banner {
+  background: #172233;
+  border-color: #263852;
+}
+html[data-theme="dark"] .sub-tab-btn.active {
+  background: #1A283D;
+  color: #79A5D6;
+  border-bottom-color: #79A5D6;
+}
+
 /* Modals */
 .modal-overlay {
   position: fixed;
@@ -1119,7 +1209,12 @@ html, body {
       </button>
       <button class="nav-link role-group-admin" data-view="students">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-        Students
+        Student Directory
+      </button>
+      <!-- Dedicated Teacher Student Management -->
+      <button class="nav-link role-group-teacher" data-view="teacher-students" style="display:none;">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        My Students
       </button>
       <button class="nav-link role-group-admin-teacher" data-view="subjects">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
@@ -1141,7 +1236,11 @@ html, body {
         My Academic Scorecard
       </button>
 
-      <div class="nav-group-title role-group-admin">Governance &amp; Audit</div>
+      <div class="nav-group-title role-group-admin">Governance &amp; Access</div>
+      <button class="nav-link role-group-admin" data-view="users">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        User Management
+      </button>
       <button class="nav-link role-group-admin" data-view="analytics">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
         Class Analytics
@@ -1678,6 +1777,199 @@ html, body {
         </div>
       </section>
 
+    
+      <!-- ================= 11. ADMIN USER MANAGEMENT VIEW ================= -->
+      <section class="view-section" id="view-users">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Institutional User &amp; Access Management</h2>
+              <p class="card-desc">Comprehensive administrative control over faculty accounts, student credentials, and roles</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-sm" onclick="acadex.openStudentModal(-1)">+ Add Student</button>
+              <button class="btn btn-sm btn-primary" onclick="acadex.openTeacherModal(-1)">+ Add Teacher</button>
+            </div>
+          </div>
+
+          <!-- Summary Metric Cards -->
+          <div class="metrics-grid" style="margin-bottom: 16px;">
+            <div class="metric-box">
+              <div class="label">Total Faculty</div>
+              <div class="value" id="usrMetricTotalTeachers">0</div>
+              <div class="sub">Appointed Teachers</div>
+            </div>
+            <div class="metric-box">
+              <div class="label">Active Faculty</div>
+              <div class="value" id="usrMetricActiveTeachers" style="color:var(--ok);">0</div>
+              <div class="sub">Authorized Evaluators</div>
+            </div>
+            <div class="metric-box">
+              <div class="label">Enrolled Candidates</div>
+              <div class="value" id="usrMetricTotalStudents">0</div>
+              <div class="sub">Student Directory</div>
+            </div>
+            <div class="metric-box">
+              <div class="label">Active Students</div>
+              <div class="value" id="usrMetricActiveStudents" style="color:var(--navy);">0</div>
+              <div class="sub">Active Portals</div>
+            </div>
+          </div>
+
+          <!-- Sub-tabs Navigation -->
+          <div class="sub-tabs">
+            <button class="sub-tab-btn active" id="usrSubTabTeachers" onclick="acadex.switchUserSubTab('teachers')">
+              Faculty &amp; Teachers (<span id="usrTabCountTeachers">0</span>)
+            </button>
+            <button class="sub-tab-btn" id="usrSubTabStudents" onclick="acadex.switchUserSubTab('students')">
+              Enrolled Students (<span id="usrTabCountStudents">0</span>)
+            </button>
+          </div>
+
+          <!-- Filter Toolbar -->
+          <div class="filter-toolbar" style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+            <input type="text" class="input" id="usrSearchInput" placeholder="Search by name, email, ID, or department..." style="max-width: 280px;" oninput="acadex.renderUsers()">
+            <select class="input" id="usrStatusFilter" style="max-width: 150px;" onchange="acadex.renderUsers()">
+              <option value="ALL">All Statuses</option>
+              <option value="ACTIVE">Active Only</option>
+              <option value="INACTIVE">Inactive Only</option>
+            </select>
+            <select class="input" id="usrDeptFilter" style="max-width: 180px;" onchange="acadex.renderUsers()">
+              <option value="ALL">All Departments</option>
+            </select>
+            <button class="btn btn-sm" onclick="acadex.clearUserFilters()">Reset Filters</button>
+          </div>
+
+          <!-- 1. Teachers Tab Content -->
+          <div id="usrTeachersContent">
+            <div class="table-scroll-hint"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg> Scroll horizontally for all columns &rarr;</div>
+            <div class="table-wrap">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th style="width: 110px;">Teacher ID</th>
+                    <th>Faculty Name &amp; Email</th>
+                    <th>Department</th>
+                    <th>Assigned Course(s)</th>
+                    <th>Sections</th>
+                    <th style="width: 90px;">Status</th>
+                    <th style="text-align: right; width: 170px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usrTeachersBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 2. Students Tab Content -->
+          <div id="usrStudentsContent" style="display:none;">
+            <div class="table-scroll-hint"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg> Scroll horizontally for all columns &rarr;</div>
+            <div class="table-wrap">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th style="width: 130px;">Enrollment No</th>
+                    <th>Candidate Name &amp; Email</th>
+                    <th>Department &amp; Year</th>
+                    <th>Section</th>
+                    <th>Semester</th>
+                    <th style="width: 90px;">Status</th>
+                    <th style="text-align: right; width: 170px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usrStudentsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="notice" style="margin-top: 14px;">
+            <strong>Institutional Access Control:</strong> Only active faculty members are authorized to evaluate assigned cohorts. Deactivating an account immediately blocks evaluation permissions while preserving historical grade records.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 12. TEACHER MY STUDENTS VIEW ================= -->
+      <section class="view-section" id="view-teacher-students">
+        <div class="card">
+          <!-- Active Teacher Scope Banner -->
+          <div class="teacher-scope-banner">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <div class="teacher-avatar">👨‍🏫</div>
+              <div>
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.85;">Authorized Faculty Workspace</div>
+                <div style="font-size: 16px; font-weight: 700;" id="tchScopeName">Prof. Rajesh Sharma</div>
+                <div style="font-size: 12.5px; opacity: 0.9;" id="tchScopeMeta">ID: TCH-101 &middot; Dept: CSBS &middot; Assigned: Section CSBS-A</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <select class="input input-sm" id="tchActiveSelector" style="max-width: 220px;" onchange="acadex.switchActiveTeacher(this.value)" title="Switch Faculty Account"></select>
+              <button class="btn btn-sm btn-primary" onclick="acadex.openTeacherAddStudentModal()">+ Add Student to My Cohort</button>
+            </div>
+          </div>
+
+          <!-- Cohort Metrics -->
+          <div class="metrics-grid" style="margin-bottom: 16px;">
+            <div class="metric-box">
+              <div class="label">Assigned Cohort</div>
+              <div class="value" id="tchMetricCohort">0</div>
+              <div class="sub">Students in Assigned Section</div>
+            </div>
+            <div class="metric-box">
+              <div class="label">Evaluated Students</div>
+              <div class="value" id="tchMetricEvaluated" style="color:var(--navy);">0</div>
+              <div class="sub">Marks Finalized</div>
+            </div>
+            <div class="metric-box">
+              <div class="label">Pending Evaluation</div>
+              <div class="value" id="tchMetricPending" style="color:var(--warn);">0</div>
+              <div class="sub">Marks Entry Incomplete</div>
+            </div>
+            <div class="metric-box">
+              <div class="label">Cohort Pass Rate</div>
+              <div class="value" id="tchMetricPassRate" style="color:var(--ok);">0%</div>
+              <div class="sub">Qualified Ratio</div>
+            </div>
+          </div>
+
+          <!-- Cohort Filter Toolbar -->
+          <div class="filter-toolbar" style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+            <input type="text" class="input" id="tchSearchInput" placeholder="Filter by candidate name or enrollment..." style="max-width: 280px;" oninput="acadex.renderTeacherStudents()">
+            <select class="input" id="tchStatusFilter" style="max-width: 170px;" onchange="acadex.renderTeacherStudents()">
+              <option value="ALL">All Evaluation States</option>
+              <option value="EVALUATED">Evaluated Only</option>
+              <option value="PENDING">Pending Marks</option>
+              <option value="PASS">Passed Candidates</option>
+              <option value="FAIL">Remedial Candidates</option>
+            </select>
+            <button class="btn btn-sm" onclick="acadex.clearTeacherFilters()">Reset</button>
+          </div>
+
+          <div class="table-scroll-hint"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg> Scroll horizontally for all columns &rarr;</div>
+          <div class="table-wrap">
+            <table class="app-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">#</th>
+                  <th>Enrollment</th>
+                  <th>Candidate Name</th>
+                  <th>Section</th>
+                  <th>Evaluation Status</th>
+                  <th>Total Marks</th>
+                  <th>SGPA</th>
+                  <th>Grade</th>
+                  <th style="text-align: right; width: 180px;">Evaluation Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tchStudentsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="notice" style="margin-top: 14px;">
+            <strong>Faculty Delegation Scope:</strong> As an appointed faculty member, your grade entry access is restricted to candidates enrolled in your assigned sections. All marks modifications are logged to the institutional audit trail.
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
@@ -1685,6 +1977,78 @@ html, body {
 <!-- ================= MODALS ================= -->
 
 <!-- Student Modal -->
+
+<!-- Teacher Modal -->
+<div class="modal-overlay" id="teacherModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="teacherModalTitle">Add Faculty Member</h3>
+      <button class="btn btn-sm" onclick="acadex.closeModals()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="teacherForm" onsubmit="event.preventDefault(); acadex.saveTeacher();">
+        <input type="hidden" id="tchEditIdx" value="-1">
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Teacher ID *</label>
+          <input type="text" class="input mono" id="tchIdInput" required placeholder="e.g. TCH-104">
+          <span style="font-size:11px; color:var(--ink-muted);">Unique employee identification number.</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Full Name &amp; Academic Title *</label>
+          <input type="text" class="input" id="tchNameInput" required placeholder="e.g. Dr. Ramesh Gupta">
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Official Institutional Email *</label>
+          <input type="email" class="input" id="tchEmailInput" required placeholder="e.g. r.gupta@mitsgwalior.in">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:12px;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Department *</label>
+            <select class="input" id="tchDeptInput">
+              <option value="Computer Science & Business Systems">Computer Science &amp; Business Systems (CSBS)</option>
+              <option value="Applied Mathematics">Applied Mathematics</option>
+              <option value="Electronics & Communication">Electronics &amp; Communication</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Humanities & Management">Humanities &amp; Management</option>
+            </select>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Assigned Section *</label>
+            <select class="input" id="tchSectionInput">
+              <option value="CSBS-A">CSBS-A</option>
+              <option value="CSBS-B">CSBS-B</option>
+              <option value="All Sections">All Sections</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Assigned Curriculum Subject(s)</label>
+          <div id="tchSubjectsCheckboxes" style="display:flex; flex-wrap:wrap; gap:8px; padding:8px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface-alt);">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:12px;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Account Status</label>
+            <select class="input" id="tchStatusInput">
+              <option value="ACTIVE">Active (Authorized)</option>
+              <option value="INACTIVE">Inactive (Suspended)</option>
+            </select>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Initial Passcode</label>
+            <input type="text" class="input mono" id="tchPasswordInput" placeholder="Auto-generated: MITS@2024" value="MITS@2024">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-sm" onclick="acadex.closeModals()">Cancel</button>
+      <button class="btn btn-sm btn-primary" onclick="acadex.saveTeacher()">Save Faculty Record</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="studentModal">
   <div class="modal-card">
     <div class="modal-head">
@@ -2073,12 +2437,25 @@ class AcadexEngine {
       sec.classList.toggle("active", sec.id === `view-${viewName}`);
     });
 
+    // Strict RBAC Navigation Guards
+    if (this.state.currentRole === "STUDENT" && viewName !== "student-portal") {
+      this.toast("Access Restricted: Student accounts are confined to personal scorecards.", "error");
+      return;
+    }
+    if (this.state.currentRole === "TEACHER" && ["users", "students", "grading", "audit", "reports"].includes(viewName)) {
+      this.toast("Access Restricted: Administrator privileges required for this module.", "error");
+      this.navTo("teacher-students");
+      return;
+    }
+
     const headers = {
       dashboard: "Academic Dashboard",
       students: "Student Records Directory",
       subjects: "Curriculum & Course Papers",
       marks: "Evaluation & Marks Register",
       results: "Official Class Merit Register",
+      users: "Institutional User & Access Management",
+      "teacher-students": "Faculty Cohort Management",
       "student-portal": "Candidate Grade Transcript",
       analytics: "Cohort Performance Analytics",
       grading: "10-Point Ordinance Scheme",
@@ -2100,23 +2477,27 @@ class AcadexEngine {
 
     const adminEls = document.querySelectorAll(".role-group-admin");
     const teacherEls = document.querySelectorAll(".role-group-admin-teacher");
+    const teacherOnlyEls = document.querySelectorAll(".role-group-teacher");
     const studentEls = document.querySelectorAll(".role-group-student");
 
     if (role === "STUDENT") {
       adminEls.forEach(el => el.style.display = "none");
       teacherEls.forEach(el => el.style.display = "none");
+      teacherOnlyEls.forEach(el => el.style.display = "none");
       studentEls.forEach(el => el.style.display = "flex");
       this.navTo("student-portal");
     } else if (role === "TEACHER") {
       adminEls.forEach(el => el.style.display = "none");
       teacherEls.forEach(el => el.style.display = "flex");
+      teacherOnlyEls.forEach(el => el.style.display = "flex");
       studentEls.forEach(el => el.style.display = "none");
-      if (this.currentView === "audit" || this.currentView === "grading" || this.currentView === "student-portal") {
-        this.navTo("dashboard");
+      if (["users", "audit", "grading", "reports", "students", "student-portal"].includes(this.currentView)) {
+        this.navTo("teacher-students");
       }
     } else {
       adminEls.forEach(el => el.style.display = "flex");
       teacherEls.forEach(el => el.style.display = "flex");
+      teacherOnlyEls.forEach(el => el.style.display = "none");
       studentEls.forEach(el => el.style.display = "none");
     }
 
@@ -2242,18 +2623,41 @@ class AcadexEngine {
   openStudentModal(idx = -1) {
     document.getElementById("studentEditIdx").value = idx;
     const title = document.getElementById("studentModalTitle");
+    const isTeacher = this.state.currentRole === "TEACHER";
+    const activeTch = this.getActiveTeacher();
+
     if (idx >= 0) {
       const st = this.state.students[idx];
       title.textContent = "Edit Candidate Record";
       document.getElementById("stNameInput").value = st.n || "";
       document.getElementById("stEnrInput").value = st.e || "";
       document.getElementById("stSecInput").value = st.s || "CSBS-A";
+      document.getElementById("stDeptInput").value = st.dept || "CSBS";
+      document.getElementById("stYearInput").value = st.year || "2024-25";
+      document.getElementById("stSemesterInput").value = st.semester || "Semester I";
+      document.getElementById("stStatusInput").value = st.status || "ACTIVE";
       document.getElementById("stEmailInput").value = st.email || "";
     } else {
-      title.textContent = "Add New Candidate";
+      title.textContent = isTeacher ? "Add Student to My Cohort" : "Add New Candidate";
       document.getElementById("studentForm").reset();
-      document.getElementById("stSecInput").value = "CSBS-A";
+      const defaultSec = (isTeacher && activeTch && activeTch.sections[0]) ? activeTch.sections[0] : "CSBS-A";
+      document.getElementById("stSecInput").value = defaultSec;
+      document.getElementById("stDeptInput").value = "CSBS";
+      document.getElementById("stYearInput").value = "2024-25";
+      document.getElementById("stSemesterInput").value = "Semester I";
+      document.getElementById("stStatusInput").value = "ACTIVE";
     }
+
+    // Teacher RBAC: lock section to teacher's authorized section
+    const secSelect = document.getElementById("stSecInput");
+    if (isTeacher && activeTch) {
+      secSelect.disabled = true;
+      secSelect.title = `Locked to your authorized cohort: ${activeTch.sections.join(", ")}`;
+    } else {
+      secSelect.disabled = false;
+      secSelect.title = "Select cohort section";
+    }
+
     document.getElementById("studentModal").classList.add("active");
   }
 
@@ -2261,7 +2665,11 @@ class AcadexEngine {
     const name = document.getElementById("stNameInput").value.trim();
     const enr = document.getElementById("stEnrInput").value.trim().toUpperCase();
     const sec = document.getElementById("stSecInput").value.trim() || "CSBS-A";
-    const email = document.getElementById("stEmailInput").value.trim();
+    const email = document.getElementById("stEmailInput").value.trim().toLowerCase();
+    const dept = document.getElementById("stDeptInput")?.value.trim() || "CSBS";
+    const year = document.getElementById("stYearInput")?.value.trim() || "2024-25";
+    const sem = document.getElementById("stSemesterInput")?.value.trim() || "Semester I";
+    const status = document.getElementById("stStatusInput")?.value || "ACTIVE";
     const idx = parseInt(document.getElementById("studentEditIdx").value, 10);
 
     if (!name || !enr) {
@@ -2269,10 +2677,26 @@ class AcadexEngine {
       return;
     }
 
-    const dup = this.state.students.some((s, i) => i !== idx && s.e.toLowerCase() === enr.toLowerCase());
-    if (dup) {
+    // Email format validation if provided
+    if (email && (!email.includes("@") || !email.includes("."))) {
+      this.toast("Please enter a valid email address.", "error");
+      return;
+    }
+
+    // Duplicate Enrollment check
+    const dupEnr = this.state.students.some((s, i) => i !== idx && s.e.toLowerCase() === enr.toLowerCase());
+    if (dupEnr) {
       this.toast(`Enrollment ${enr} already exists in database.`, "error");
       return;
+    }
+
+    // Duplicate Email check
+    if (email) {
+      const dupEmail = this.state.students.some((s, i) => i !== idx && (s.email || "").toLowerCase() === email);
+      if (dupEmail) {
+        this.toast(`Email ${email} is already registered to another student.`, "error");
+        return;
+      }
     }
 
     if (idx >= 0) {
@@ -2281,14 +2705,18 @@ class AcadexEngine {
       this.state.students[idx].e = enr;
       this.state.students[idx].s = sec;
       this.state.students[idx].email = email;
-      this.logAudit("STUDENT_UPDATE", enr, `Updated details from ${prev.n} to ${name}`);
+      this.state.students[idx].dept = dept;
+      this.state.students[idx].year = year;
+      this.state.students[idx].semester = sem;
+      this.state.students[idx].status = status;
+      this.logAudit("STUDENT_UPDATE", enr, `Updated details for ${name} (${enr}) - Status: ${status}`);
       this.toast(`Updated ${name} successfully.`, "success");
     } else {
       const k = new Array(this.state.subjects.length).fill("");
-      this.state.students.push({ n: name, e: enr, s: sec, email, k });
+      this.state.students.push({ n: name, e: enr, s: sec, email, dept, year, semester: sem, status, k });
       this.state.selectedStudent = this.state.students.length - 1;
       this.logAudit("STUDENT_CREATE", enr, `Registered new candidate ${name} in section ${sec}`);
-      this.toast(`Registered ${name}.`, "success");
+      this.toast(`Enrolled ${name} successfully.`, "success");
     }
 
     this.saveState();
@@ -2415,6 +2843,8 @@ class AcadexEngine {
     else if (this.currentView === "marks") this.renderMarks();
     else if (this.currentView === "results") this.renderResults();
     else if (this.currentView === "student-portal") this.renderStudentPortal();
+    else if (this.currentView === "users") this.renderUsers();
+    else if (this.currentView === "teacher-students") this.renderTeacherStudents();
     else if (this.currentView === "analytics") this.renderAnalytics();
     else if (this.currentView === "grading") this.renderGrading();
     else if (this.currentView === "audit") this.renderAudit();
@@ -2628,9 +3058,25 @@ class AcadexEngine {
       return;
     }
 
-    select.innerHTML = this.state.students.map((st, i) => `
-      <option value="${i}" ${i === this.state.selectedStudent ? 'selected' : ''}>
-        ${i + 1}. ${st.n} (${st.e})
+    const isTeacher = this.state.currentRole === "TEACHER";
+    const activeTch = this.getActiveTeacher();
+    let eligibleStudents = this.state.students.map((st, idx) => ({ ...st, originalIdx: idx }));
+    if (isTeacher && activeTch) {
+      eligibleStudents = eligibleStudents.filter(st => {
+        if (activeTch.sections.includes("All Sections")) return true;
+        return activeTch.sections.includes(st.s || "CSBS-A");
+      });
+    }
+
+    if (eligibleStudents.length === 0) {
+      select.innerHTML = `<option value="">No Students in Authorized Section</option>`;
+      document.getElementById("evalMarksBody").innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px;">No candidates enrolled in your authorized section (${activeTch ? activeTch.sections.join(', ') : 'None'}).</td></tr>`;
+      return;
+    }
+
+    select.innerHTML = eligibleStudents.map(st => `
+      <option value="${st.originalIdx}" ${st.originalIdx === this.state.selectedStudent ? 'selected' : ''}>
+        ${st.originalIdx + 1}. ${st.n} (${st.e} &middot; ${st.s || 'CSBS-A'})
       </option>
     `).join("");
 
@@ -3279,6 +3725,437 @@ class AcadexEngine {
     doc.save("Acadex_Official_Class_Merit_Register.pdf");
   }
 }
+
+
+  // ================= USER MANAGEMENT & RBAC ENGINE =================
+  getActiveTeacher() {
+    const list = this.state.teachers || [];
+    return list.find(t => t.id === this.state.activeTeacherId) || list[0] || null;
+  }
+
+  switchActiveTeacher(teacherId) {
+    this.state.activeTeacherId = teacherId;
+    this.saveState();
+    this.toast(`Active Faculty set to: ${this.getActiveTeacher()?.n}`, "info");
+    this.render();
+  }
+
+  switchUserSubTab(tabName) {
+    const btnTeachers = document.getElementById("usrSubTabTeachers");
+    const btnStudents = document.getElementById("usrSubTabStudents");
+    const cntTeachers = document.getElementById("usrTeachersContent");
+    const cntStudents = document.getElementById("usrStudentsContent");
+
+    if (tabName === "teachers") {
+      btnTeachers.classList.add("active");
+      btnStudents.classList.remove("active");
+      cntTeachers.style.display = "block";
+      cntStudents.style.display = "none";
+    } else {
+      btnTeachers.classList.remove("active");
+      btnStudents.classList.add("active");
+      cntTeachers.style.display = "none";
+      cntStudents.style.display = "block";
+    }
+  }
+
+  clearUserFilters() {
+    document.getElementById("usrSearchInput").value = "";
+    document.getElementById("usrStatusFilter").value = "ALL";
+    document.getElementById("usrDeptFilter").value = "ALL";
+    this.renderUsers();
+  }
+
+  renderUsers() {
+    const q = (document.getElementById("usrSearchInput")?.value || "").toLowerCase().trim();
+    const statusFilter = document.getElementById("usrStatusFilter")?.value || "ALL";
+    const deptFilter = document.getElementById("usrDeptFilter")?.value || "ALL";
+
+    const teachers = this.state.teachers || [];
+    const students = this.state.students || [];
+
+    // Populate department filter
+    const depts = Array.from(new Set([
+      ...teachers.map(t => t.dept || "Computer Science & Business Systems"),
+      ...students.map(s => s.dept || "CSBS")
+    ])).filter(Boolean);
+    const deptSelect = document.getElementById("usrDeptFilter");
+    if (deptSelect && deptSelect.options.length <= 1) {
+      depts.forEach(d => {
+        const opt = document.createElement("option");
+        opt.value = d;
+        opt.textContent = d;
+        deptSelect.appendChild(opt);
+      });
+    }
+
+    // Update Counts & Metrics
+    const activeTchCount = teachers.filter(t => t.status === "ACTIVE").length;
+    const activeStCount = students.filter(s => (s.status || "ACTIVE") === "ACTIVE").length;
+    document.getElementById("usrMetricTotalTeachers").textContent = teachers.length;
+    document.getElementById("usrMetricActiveTeachers").textContent = activeTchCount;
+    document.getElementById("usrMetricTotalStudents").textContent = students.length;
+    document.getElementById("usrMetricActiveStudents").textContent = activeStCount;
+    document.getElementById("usrTabCountTeachers").textContent = teachers.length;
+    document.getElementById("usrTabCountStudents").textContent = students.length;
+
+    // Render Teachers Table
+    const filteredTeachers = teachers.map((t, idx) => ({ ...t, originalIdx: idx })).filter(t => {
+      const matchQ = (t.n || "").toLowerCase().includes(q) || (t.email || "").toLowerCase().includes(q) || (t.id || "").toLowerCase().includes(q) || (t.dept || "").toLowerCase().includes(q);
+      const matchStatus = statusFilter === "ALL" ? true : (t.status || "ACTIVE") === statusFilter;
+      const matchDept = deptFilter === "ALL" ? true : (t.dept || "") === deptFilter;
+      return matchQ && matchStatus && matchDept;
+    });
+
+    const tchTbody = document.getElementById("usrTeachersBody");
+    if (filteredTeachers.length === 0) {
+      tchTbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--ink-secondary);">No faculty records match current filters. Click "+ Add Teacher" to register faculty.</td></tr>`;
+    } else {
+      tchTbody.innerHTML = filteredTeachers.map(t => `
+        <tr>
+          <td class="mono" style="font-weight:700; color:var(--navy);">${t.id}</td>
+          <td>
+            <div style="font-weight:600;">${t.n}</div>
+            <div style="font-size:11.5px; color:var(--ink-secondary);">${t.email}</div>
+          </td>
+          <td><span class="meta-chip">${t.dept}</span></td>
+          <td>
+            <div style="display:flex; flex-wrap:wrap; gap:4px;">
+              ${(t.subjects || []).map(code => `<span class="badge badge-grade">${code}</span>`).join("") || '<span style="color:var(--ink-muted);">&ndash;</span>'}
+            </div>
+          </td>
+          <td><span class="mono">${(t.sections || []).join(", ") || 'CSBS-A'}</span></td>
+          <td>
+            <span class="${t.status === 'ACTIVE' ? 'badge-active' : 'badge-inactive'}">
+              &bull; ${t.status || 'ACTIVE'}
+            </span>
+          </td>
+          <td style="text-align:right;">
+            <div style="display:inline-flex; gap:6px;">
+              <button class="btn btn-sm" onclick="acadex.openTeacherModal(${t.originalIdx})" title="Edit Faculty Details">Edit</button>
+              <button class="btn btn-sm" onclick="acadex.toggleTeacherStatus(${t.originalIdx})" title="Toggle Active/Inactive">${t.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}</button>
+              <button class="btn btn-sm btn-danger" onclick="acadex.confirmDeleteTeacher(${t.originalIdx})" title="Delete Teacher">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    // Render Students Table
+    const filteredStudents = students.map((s, idx) => ({ ...s, originalIdx: idx })).filter(s => {
+      const matchQ = (s.n || "").toLowerCase().includes(q) || (s.email || "").toLowerCase().includes(q) || (s.e || "").toLowerCase().includes(q) || (s.dept || "CSBS").toLowerCase().includes(q);
+      const matchStatus = statusFilter === "ALL" ? true : (s.status || "ACTIVE") === statusFilter;
+      const matchDept = deptFilter === "ALL" ? true : (s.dept || "CSBS") === deptFilter;
+      return matchQ && matchStatus && matchDept;
+    });
+
+    const stTbody = document.getElementById("usrStudentsBody");
+    if (filteredStudents.length === 0) {
+      stTbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--ink-secondary);">No student records match current filters. Click "+ Add Student" to enroll candidate.</td></tr>`;
+    } else {
+      stTbody.innerHTML = filteredStudents.map(s => `
+        <tr>
+          <td class="mono" style="font-weight:700; color:var(--navy);">${s.e}</td>
+          <td>
+            <div style="font-weight:600;">${s.n}</div>
+            <div style="font-size:11.5px; color:var(--ink-secondary);">${s.email || (s.e.toLowerCase() + '@mitsgwalior.in')}</div>
+          </td>
+          <td><span class="meta-chip">${s.dept || 'CSBS'} &middot; ${s.year || '2024-25'}</span></td>
+          <td><span class="mono">${s.s || 'CSBS-A'}</span></td>
+          <td>${s.semester || 'Semester I'}</td>
+          <td>
+            <span class="${(s.status || 'ACTIVE') === 'ACTIVE' ? 'badge-active' : 'badge-inactive'}">
+              &bull; ${s.status || 'ACTIVE'}
+            </span>
+          </td>
+          <td style="text-align:right;">
+            <div style="display:inline-flex; gap:6px;">
+              <button class="btn btn-sm" onclick="acadex.openStudentModal(${s.originalIdx})" title="Edit Candidate">Edit</button>
+              <button class="btn btn-sm" onclick="acadex.toggleStudentStatus(${s.originalIdx})" title="Toggle Active/Inactive">${(s.status || 'ACTIVE') === 'ACTIVE' ? 'Suspend' : 'Activate'}</button>
+              <button class="btn btn-sm btn-danger" onclick="acadex.confirmDeleteStudent(${s.originalIdx})" title="Delete Candidate">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+  }
+
+  // Teacher Modal Open & Save
+  openTeacherModal(idx = -1) {
+    document.getElementById("tchEditIdx").value = idx;
+    const title = document.getElementById("teacherModalTitle");
+    const container = document.getElementById("tchSubjectsCheckboxes");
+
+    // Populate subjects checkboxes
+    const subjects = this.state.subjects || [];
+    container.innerHTML = subjects.map(sub => `
+      <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; cursor:pointer; background:var(--surface); padding:4px 8px; border-radius:4px; border:1px solid var(--border);">
+        <input type="checkbox" name="tchSubCheckbox" value="${sub.code}">
+        <span class="mono" style="font-weight:600;">${sub.code}</span> (${sub.n})
+      </label>
+    `).join("");
+
+    if (idx >= 0) {
+      const t = this.state.teachers[idx];
+      title.textContent = "Edit Faculty Record";
+      document.getElementById("tchIdInput").value = t.id || "";
+      document.getElementById("tchIdInput").readOnly = true; // Teacher ID is primary key
+      document.getElementById("tchNameInput").value = t.n || "";
+      document.getElementById("tchEmailInput").value = t.email || "";
+      document.getElementById("tchDeptInput").value = t.dept || "Computer Science & Business Systems";
+      document.getElementById("tchSectionInput").value = (t.sections && t.sections[0]) || "CSBS-A";
+      document.getElementById("tchStatusInput").value = t.status || "ACTIVE";
+      document.getElementById("tchPasswordInput").value = "********";
+
+      // Check assigned subjects
+      const assigned = t.subjects || [];
+      document.querySelectorAll("input[name='tchSubCheckbox']").forEach(cb => {
+        cb.checked = assigned.includes(cb.value);
+      });
+    } else {
+      title.textContent = "Add New Faculty Member";
+      document.getElementById("teacherForm").reset();
+      document.getElementById("tchIdInput").readOnly = false;
+      document.getElementById("tchIdInput").value = "TCH-" + Math.floor(100 + Math.random() * 900);
+      document.getElementById("tchStatusInput").value = "ACTIVE";
+      document.getElementById("tchPasswordInput").value = "MITS@" + (new Date().getFullYear());
+    }
+    document.getElementById("teacherModal").classList.add("active");
+  }
+
+  saveTeacher() {
+    const idx = parseInt(document.getElementById("tchEditIdx").value, 10);
+    const id = document.getElementById("tchIdInput").value.trim().toUpperCase();
+    const name = document.getElementById("tchNameInput").value.trim();
+    const email = document.getElementById("tchEmailInput").value.trim().toLowerCase();
+    const dept = document.getElementById("tchDeptInput").value;
+    const section = document.getElementById("tchSectionInput").value;
+    const status = document.getElementById("tchStatusInput").value;
+
+    if (!id || !name || !email) {
+      this.toast("Please fill in all required fields (ID, Name, Email).", "error");
+      return;
+    }
+
+    // Email format validation
+    if (!email.includes("@") || !email.includes(".")) {
+      this.toast("Please enter a valid institutional email address.", "error");
+      return;
+    }
+
+    // Unique Teacher ID check
+    const dupId = this.state.teachers.find((t, i) => i !== idx && t.id.toUpperCase() === id);
+    if (dupId) {
+      this.toast(`Teacher ID "${id}" is already assigned to ${dupId.n}.`, "error");
+      return;
+    }
+
+    // Unique Email check across teachers and students
+    const dupEmail = this.state.teachers.find((t, i) => i !== idx && (t.email || "").toLowerCase() === email);
+    if (dupEmail) {
+      this.toast(`Email address "${email}" is already registered to ${dupEmail.n}.`, "error");
+      return;
+    }
+
+    // Gather selected subjects
+    const selectedSubs = [];
+    document.querySelectorAll("input[name='tchSubCheckbox']:checked").forEach(cb => {
+      selectedSubs.push(cb.value);
+    });
+
+    const teacherObj = {
+      id,
+      n: name,
+      email,
+      dept,
+      subjects: selectedSubs,
+      sections: [section],
+      status
+    };
+
+    if (idx >= 0) {
+      this.state.teachers[idx] = teacherObj;
+      this.logAudit("TEACHER_UPDATED", `Faculty: ${name} (${id})`, `Updated profile, department: ${dept}, courses: ${selectedSubs.join(", ")}`);
+      this.toast(`Faculty record for "${name}" updated.`, "success");
+    } else {
+      this.state.teachers.push(teacherObj);
+      this.logAudit("TEACHER_ADDED", `Faculty: ${name} (${id})`, `Enrolled new faculty in ${dept} with ${selectedSubs.length} course(s)`);
+      this.toast(`Faculty member "${name}" registered successfully.`, "success");
+    }
+
+    this.saveState();
+    this.closeModals();
+    this.render();
+  }
+
+  toggleTeacherStatus(idx) {
+    const t = this.state.teachers[idx];
+    if (!t) return;
+    t.status = t.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    this.logAudit("TEACHER_STATUS_CHANGED", `Faculty: ${t.n} (${t.id})`, `Account status updated to ${t.status}`);
+    this.saveState();
+    this.toast(`Faculty member "${t.n}" is now ${t.status}.`, t.status === "ACTIVE" ? "success" : "info");
+    this.renderUsers();
+  }
+
+  confirmDeleteTeacher(idx) {
+    const t = this.state.teachers[idx];
+    if (!t) return;
+    document.getElementById("confirmModalText").textContent = `Are you sure you want to permanently delete faculty member "${t.n}" (${t.id})? This will revoke all evaluation permissions.`;
+    document.getElementById("confirmModalBtn").onclick = () => {
+      this.state.teachers.splice(idx, 1);
+      this.logAudit("TEACHER_DELETED", `Faculty: ${t.n} (${t.id})`, `Permanently removed faculty member from institutional directory`);
+      this.saveState();
+      this.toast(`Faculty record "${t.n}" deleted.`, "info");
+      this.closeModals();
+      this.render();
+    };
+    document.getElementById("confirmModal").classList.add("active");
+  }
+
+  toggleStudentStatus(idx) {
+    const s = this.state.students[idx];
+    if (!s) return;
+    s.status = (s.status || "ACTIVE") === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    this.logAudit("STUDENT_STATUS_CHANGED", `Candidate: ${s.n} (${s.e})`, `Enrollment status toggled to ${s.status}`);
+    this.saveState();
+    this.toast(`Candidate "${s.n}" status set to ${s.status}.`, s.status === "ACTIVE" ? "success" : "info");
+    if (this.currentView === "users") this.renderUsers();
+    else this.renderStudents();
+  }
+
+  confirmDeleteStudent(idx) {
+    const s = this.state.students[idx];
+    if (!s) return;
+    document.getElementById("confirmModalText").textContent = `Are you sure you want to permanently remove candidate "${s.n}" (${s.e})? All recorded semester marks will be erased.`;
+    document.getElementById("confirmModalBtn").onclick = () => {
+      this.state.students.splice(idx, 1);
+      this.logAudit("STUDENT_DELETED", `Candidate: ${s.n} (${s.e})`, `Permanently removed candidate enrollment and mark records`);
+      this.saveState();
+      this.toast(`Candidate "${s.n}" record deleted.`, "info");
+      this.closeModals();
+      this.render();
+    };
+    document.getElementById("confirmModal").classList.add("active");
+  }
+
+  // --- TEACHER'S SCOPED STUDENT MANAGEMENT ---
+  clearTeacherFilters() {
+    document.getElementById("tchSearchInput").value = "";
+    document.getElementById("tchStatusFilter").value = "ALL";
+    this.renderTeacherStudents();
+  }
+
+  openTeacherAddStudentModal() {
+    const activeTch = this.getActiveTeacher();
+    this.openStudentModal(-1);
+    // Lock department and section to active teacher's authorized scope
+    if (activeTch) {
+      const secInput = document.getElementById("stSecInput");
+      const defaultSec = activeTch.sections[0] || "CSBS-A";
+      secInput.value = defaultSec;
+      document.getElementById("stDeptInput").value = activeTch.dept.includes("CSBS") ? "CSBS" : "Engineering";
+    }
+  }
+
+  renderTeacherStudents() {
+    const activeTch = this.getActiveTeacher();
+    const teachers = this.state.teachers || [];
+
+    // Populate teacher switcher in banner
+    const selector = document.getElementById("tchActiveSelector");
+    if (selector) {
+      selector.innerHTML = teachers.map(t => `
+        <option value="${t.id}" ${t.id === (activeTch?.id) ? 'selected' : ''}>
+          ${t.n} (${t.sections.join(", ")})
+        </option>
+      `).join("");
+    }
+
+    if (!activeTch) {
+      document.getElementById("tchScopeName").textContent = "No Faculty Selected";
+      document.getElementById("tchScopeMeta").textContent = "Please select or register a faculty member.";
+      document.getElementById("tchStudentsBody").innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px;">No authorized faculty account active.</td></tr>`;
+      return;
+    }
+
+    document.getElementById("tchScopeName").textContent = activeTch.n;
+    document.getElementById("tchScopeMeta").textContent = `ID: ${activeTch.id} &middot; Dept: ${activeTch.dept} &middot; Authorized Section: ${activeTch.sections.join(", ")}`;
+
+    // Filter students by active teacher's assigned section(s)
+    const cohort = this.state.students.map((st, idx) => ({ ...st, originalIdx: idx })).filter(st => {
+      if (activeTch.sections.includes("All Sections")) return true;
+      return activeTch.sections.includes(st.s || "CSBS-A");
+    });
+
+    const evaluatedCount = cohort.filter(st => {
+      const res = this.evaluateStudent(st);
+      return res.isComplete && !res.hasInvalid;
+    }).length;
+    const passedCount = cohort.filter(st => {
+      const res = this.evaluateStudent(st);
+      return res.isComplete && res.resultStatus === "PASS";
+    }).length;
+
+    const passRate = evaluatedCount > 0 ? ((passedCount / evaluatedCount) * 100).toFixed(1) : "0.0";
+
+    document.getElementById("tchMetricCohort").textContent = cohort.length;
+    document.getElementById("tchMetricEvaluated").textContent = evaluatedCount;
+    document.getElementById("tchMetricPending").textContent = cohort.length - evaluatedCount;
+    document.getElementById("tchMetricPassRate").textContent = passRate + "%";
+
+    const q = (document.getElementById("tchSearchInput")?.value || "").toLowerCase().trim();
+    const statusFilter = document.getElementById("tchStatusFilter")?.value || "ALL";
+
+    const filtered = cohort.filter(st => {
+      const res = this.evaluateStudent(st);
+      const matchQ = (st.n || "").toLowerCase().includes(q) || (st.e || "").toLowerCase().includes(q);
+      let matchStatus = true;
+      if (statusFilter === "EVALUATED") matchStatus = res.isComplete;
+      else if (statusFilter === "PENDING") matchStatus = !res.isComplete;
+      else if (statusFilter === "PASS") matchStatus = res.resultStatus === "PASS";
+      else if (statusFilter === "FAIL") matchStatus = res.resultStatus === "FAIL";
+      return matchQ && matchStatus;
+    });
+
+    const tbody = document.getElementById("tchStudentsBody");
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:var(--ink-secondary);">No candidates found in your assigned cohort matching current filters. Click "+ Add Student to My Cohort" to enroll candidates.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map((st, i) => {
+      const res = this.evaluateStudent(st);
+      return `
+        <tr>
+          <td><span class="badge badge-grade">#${i + 1}</span></td>
+          <td class="mono" style="font-weight:700; color:var(--navy);">${st.e}</td>
+          <td>
+            <div style="font-weight:600;">${st.n}</div>
+            <div style="font-size:11px; color:var(--ink-muted);">${st.email || (st.e.toLowerCase() + '@mitsgwalior.in')}</div>
+          </td>
+          <td><span class="mono">${st.s || 'CSBS-A'}</span></td>
+          <td>
+            ${res.isComplete ? (res.resultStatus === 'PASS' ? '<span class="badge badge-pass">Qualified (Pass)</span>' : '<span class="badge badge-fail">Remedial (Fail)</span>') : '<span class="badge badge-inc">Pending Evaluation</span>'}
+          </td>
+          <td class="mono">${res.isComplete ? res.totalObt + ' / ' + res.totalMax : '&ndash;'}</td>
+          <td class="mono" style="font-weight:700;">${res.sgpa !== null ? res.sgpa.toFixed(2) : '&ndash;'}</td>
+          <td>${res.overallGrade ? `<span class="badge badge-grade ${res.overallGrade === 'F' ? 'fail' : ''}">${res.overallGrade}</span>` : '&ndash;'}</td>
+          <td style="text-align:right;">
+            <div style="display:inline-flex; gap:6px;">
+              <button class="btn btn-sm btn-primary" onclick="acadex.jumpToGradeStudent(${st.originalIdx})" title="Grade Course Papers">Grade Marks</button>
+              <button class="btn btn-sm" onclick="acadex.openStudentModal(${st.originalIdx})" title="Edit Details">Edit</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  jumpToGradeStudent(studentIdx) {
+    this.state.selectedStudent = studentIdx;
+    this.navTo("marks");
+  }
 
 // Global bootstrap
 let acadex;

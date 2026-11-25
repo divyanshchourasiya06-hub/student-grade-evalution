@@ -201,4 +201,43 @@ Acadex 2.0 incorporates a dedicated mobile design system optimized across viewpo
 
 ---
 
+## 8. Role-Based Access Control (RBAC) & User Management System
+
+Acadex 2.0 implements institutional role separation across **Institutional Administrator**, **Faculty Evaluator**, and **Candidate Student**:
+
+### 1. Permission Matrix
+
+| Module & Action | Administrator (`ADMIN`) | Faculty Member (`TEACHER`) | Candidate (`STUDENT`) |
+| :--- | :---: | :---: | :---: |
+| **Add / Edit Faculty Records** | ✅ Full Access | ❌ Blocked | ❌ Blocked |
+| **Activate / Deactivate Faculty** | ✅ Full Access | ❌ Blocked | ❌ Blocked |
+| **Delete Faculty Accounts** | ✅ With Audit Log | ❌ Blocked | ❌ Blocked |
+| **Enroll Candidates** | ✅ Global Scope | ✅ Scoped to Assigned Cohort | ❌ Blocked |
+| **Edit Candidate Profiles** | ✅ Global Scope | ✅ Scoped to Assigned Cohort | ❌ Blocked |
+| **Delete Candidate Records** | ✅ With Audit Log | ❌ Blocked (Admin Only) | ❌ Blocked |
+| **Marks Entry & Grading** | ✅ Authorized | ✅ Scoped to Assigned Section | ❌ Blocked |
+| **10-Point Ordinance Scheme** | ✅ Full Control | ❌ View Only / Blocked | ❌ Blocked |
+| **Audit Log Inspection** | ✅ Full History | ❌ Blocked | ❌ Blocked |
+| **Publish Exam Results** | ✅ Authorized | ❌ Blocked | ❌ Blocked |
+| **Personal Grade Transcript** | ✅ Available | ✅ Available | ✅ Exclusive Self-Service |
+
+### 2. Administrator User Management (`#view-users`)
+- **Sub-Tabs**: Split into **Faculty & Teachers** and **Enrolled Students** with live badge counters.
+- **Summary Metrics**: Live monitoring of Total Faculty, Active Faculty, Enrolled Candidates, and Active Students.
+- **Duplicate Prevention**: Enforces unique Teacher IDs, unique Enrollment numbers, and unique institutional email addresses.
+- **Activation Lifecycle**: Toggle faculty or students between `ACTIVE` (Authorized) and `INACTIVE` (Suspended) with immediate permission revocation.
+- **Confirmation Modals**: Two-step confirmation dialogs before deleting faculty or candidate records.
+
+### 3. Faculty Scoped Workspace (`#view-teacher-students`)
+- **Cohort Isolation**: Teachers only see, search, and evaluate candidates belonging to their assigned section (e.g. `CSBS-A`).
+- **Scoped Enrollment**: Adding a student through the teacher portal locks the section to the teacher's authorized section.
+- **Direct Grade Jump**: One-click action to navigate directly into the Marks Register with the selected candidate active.
+- **Access Guarding**: Client-side navigation guards automatically block and redirect unauthorized attempts to access Admin-only modules (`/users`, `/grading`, `/audit`, `/reports`).
+
+### 4. Data Storage & Architecture Notes
+- **Client Persistence**: Persisted in browser `localStorage` under `acadex_teachers`, `acadex_students`, `acadex_audit`, and `acadex_active_teacher`.
+- **Backend Architecture (`/backend`)**: Full-stack REST API with PostgreSQL Prisma ORM, Argon2 password hashing, and JWT middleware (`authorize(Role.ADMIN)` / `authorize(Role.TEACHER)`).
+
+---
+
 *ACADEX &middot; Autonomous Grade Evaluation & Merit System 2.0*
