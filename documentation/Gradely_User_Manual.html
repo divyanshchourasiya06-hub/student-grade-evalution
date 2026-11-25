@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gradely - Complete User Manual</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+    @bottom-center {
+      content: "Gradely User Manual | Page " counter(page);
+      font-size: 9pt;
+      font-family: Arial, sans-serif;
+      color: #64748B;
+    }
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1E293B;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  h1.manual-title {
+    font-size: 24pt;
+    color: #12355B;
+    margin-bottom: 5px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  h1.section-title {
+    font-size: 16pt;
+    color: #12355B;
+    border-bottom: 2px solid #E2E8F0;
+    padding-bottom: 5px;
+    margin-top: 1.5em;
+  }
+
+  h2 {
+    font-size: 13pt;
+    color: #0F172A;
+    margin-top: 1.2em;
+  }
+
+  .step-box {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin: 12px 0;
+  }
+
+  .step-num {
+    display: inline-block;
+    background: #12355B;
+    color: white;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px;
+    border-radius: 50%;
+    font-size: 10pt;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  .ui-mockup {
+    background: #0F172A;
+    color: #38BDF8;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 8.5pt;
+    line-height: 1.3;
+    white-space: pre;
+    margin: 15px 0;
+  }
+
+  .alert-tip {
+    background: #EFF6FF;
+    border-left: 4px solid #3B82F6;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 10pt;
+  }
+
+  .alert-warning {
+    background: #FFFBEB;
+    border-left: 4px solid #F59E0B;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 10pt;
+  }
+
+  table.manual-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 10pt;
+  }
+
+  table.manual-table th, table.manual-table td {
+    border: 1px solid #CBD5E1;
+    padding: 6px 10px;
+    text-align: left;
+  }
+
+  table.manual-table th {
+    background: #12355B;
+    color: white;
+  }
+
+  .role-pill {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 8.5pt;
+    font-weight: bold;
+    display: inline-block;
+  }
+  .role-admin { background: #1E3A8A; color: white; }
+  .role-teacher { background: #065F46; color: white; }
+  .role-student { background: #7C2D12; color: white; }
+</style>
+</head>
+<body>
+
+<div style="text-align: center; border-bottom: 3px solid #12355B; padding-bottom: 25px; margin-bottom: 25px;">
+  <div style="font-size: 11pt; font-weight: bold; color: #64748B; letter-spacing: 1px;">ACADEMIC SOFTWARE DOCUMENTATION</div>
+  <h1 class="manual-title">Gradely &ndash; Complete User Manual</h1>
+  <div style="font-size: 13pt; color: #334155; font-weight: 600;">Student Grade Evaluation & Merit Management System (Acadex 2.0)</div>
+  <div style="font-size: 10pt; color: #64748B; margin-top: 6px;">Applicable for Administrators, Faculty Members, and Students &middot; Version 2.1.0</div>
+</div>
+
+<!-- SECTION 1 -->
+<h1 class="section-title">1. Introduction to Gradely</h1>
+<p>
+  <strong>Gradely</strong> (also known as <em>Acadex 2.0</em>) is an all-in-one, browser-based academic evaluation portal designed for autonomous engineering institutions operating under the Choice-Based Credit System (CBCS). It simplifies the entire semester grading cycle, automating:
+</p>
+<ul>
+  <li>Candidate directory registration and cohort assignment.</li>
+  <li>Curriculum course paper setup with custom credit weightings.</li>
+  <li>Rapid, validated student marks input with instantaneous error checking.</li>
+  <li>Credit-weighted Semester Grade Point Average (SGPA) computation.</li>
+  <li>Automated class rank determination with secondary percentage tie-breaking.</li>
+  <li>One-click certified PDF transcript generation and CSV exports.</li>
+  <li>Tri-State theme switching (Light Mode, Dark Mode, System Default).</li>
+</ul>
+
+<!-- SECTION 2 & 3 -->
+<h1 class="section-title">2. System Access Requirements</h1>
+<p>
+  Gradely requires <strong>no software installations or plugins</strong>. You only need a modern internet browser:
+</p>
+<ul>
+  <li>Google Chrome (version 90+)</li>
+  <li>Microsoft Edge (version 90+)</li>
+  <li>Mozilla Firefox (version 88+)</li>
+  <li>Apple Safari (version 14+)</li>
+</ul>
+
+<h1 class="section-title">3. How to Open the Live Website</h1>
+<div class="step-box">
+  <span class="step-num">A</span> <strong>Cloud Live Version (Production):</strong><br>
+  Open your web browser and navigate to the official Render deployment URL:<br>
+  <a href="https://student-grade-evalution.onrender.com" target="_blank" style="font-weight: bold; color: #1E40AF;">https://student-grade-evalution.onrender.com</a>
+</div>
+<div class="step-box">
+  <span class="step-num">B</span> <strong>Local Offline Desktop Execution:</strong><br>
+  Locate <code>student.html</code> or <code>index.html</code> on your desktop and double-click it. It will open instantly in your default web browser without needing any web server or internet connection.
+</div>
+
+<!-- SECTION 4 -->
+<div class="page-break"></div>
+<h1 class="section-title">4. Role Switching & Access Privileges</h1>
+<p>
+  Gradely features strict Role-Based Access Control (RBAC). You can seamlessly switch between roles via the <strong>Role Switcher</strong> located at the bottom-left of the sidebar:
+</p>
+
+<div class="ui-mockup">
++------------------------------------+
+|  [ADMIN] [ Admin View         v ]  | <--- Click dropdown to switch role
+|  MITS Gwalior . Acadex 2.0         |
++------------------------------------+
+</div>
+
+<table class="manual-table">
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Scope & Privileges</th>
+      <th>Primary View</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="role-pill role-admin">ADMIN</span></td>
+      <td>Full institutional governance: User Management, Curriculum Courses, Ordinance Scales, Audit Trail, Global Merit PDF.</td>
+      <td>Institutional Dashboard</td>
+    </tr>
+    <tr>
+      <td><span class="role-pill role-teacher">TEACHER</span></td>
+      <td>Scoped departmental authority: View candidates in authorized sections, grade enrolled papers, track section pass rate.</td>
+      <td>My Departmental Cohort</td>
+    </tr>
+    <tr>
+      <td><span class="role-pill role-student">STUDENT</span></td>
+      <td>Strictly isolated self-service: View personal candidate card, enrolled papers, letter grades, SGPA, and download official PDF scorecard.</td>
+      <td>Candidate Grade Transcript</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 5 -->
+<h1 class="section-title">5. Admin Dashboard Walkthrough</h1>
+<p>
+  Upon accessing Gradely as an Administrator, the <strong>Academic Dashboard</strong> displays 5 live analytical metric cards:
+</p>
+<ol>
+  <li><strong>Total Candidates:</strong> Total count of enrolled students in the active academic semester.</li>
+  <li><strong>Evaluated Cohort:</strong> Number of candidates whose papers have been fully evaluated.</li>
+  <li><strong>Class Average:</strong> Average percentage across all evaluated students.</li>
+  <li><strong>Qualification Rate:</strong> Percentage of evaluated candidates who have cleared all papers with no remedial backlogs.</li>
+  <li><strong>Top Cohort SGPA:</strong> Highest SGPA achieved by the current class topper.</li>
+</ol>
+<p>
+  Below the metrics, two graphical cards illustrate the <strong>Grade Distribution (A+ to F)</strong> progress breakdown and the <strong>Subject Average Breakdown</strong> for all curriculum courses, followed by the <strong>Class Leaderboard (Top 5 Rankers)</strong>.
+</p>
+
+<!-- SECTION 6 & 7 & 8 -->
+<div class="page-break"></div>
+<h1 class="section-title">6. How Admin Adds & Manages Teachers</h1>
+<div class="step-box">
+  <span class="step-num">1</span> In the sidebar under <strong>Governance & Access</strong>, click <strong>User Management</strong>.<br>
+  <span class="step-num">2</span> Ensure the <strong>Faculty & Teachers</strong> sub-tab is active.<br>
+  <span class="step-num">3</span> Click the blue <strong>"+ Add Faculty Member"</strong> button.<br>
+  <span class="step-num">4</span> Fill in the teacher details:
+  <ul>
+    <li><strong>Full Name:</strong> e.g., <em>Dr. Alok Verma</em></li>
+    <li><strong>Teacher ID:</strong> e.g., <em>TCH-CS-101</em></li>
+    <li><strong>Department:</strong> e.g., <em>Computer Science and Engineering</em></li>
+    <li><strong>Assigned Subjects:</strong> Check the courses they teach (e.g., <em>CSE101, MTH101</em>).</li>
+    <li><strong>Authorized Section(s):</strong> Select <em>CSE-A</em>, <em>CSE-B</em>, or <em>All Sections</em>.</li>
+  </ul>
+  <span class="step-num">5</span> Click <strong>"Register Faculty Member"</strong>. The faculty member is now registered and will appear in the Teacher dropdown.
+</div>
+
+<h1 class="section-title">7. How Admin Adds & Manages Students</h1>
+<div class="step-box">
+  <span class="step-num">1</span> Navigate to <strong>Student Directory</strong> in the sidebar.<br>
+  <span class="step-num">2</span> Click <strong>"+ Add Candidate"</strong>.<br>
+  <span class="step-num">3</span> Enter the candidate's Full Name, unique Enrollment Number (e.g., <code>0901CS241021</code>), Section (<code>CSE-A</code> or <code>CSE-B</code>), Department, and Academic Email.<br>
+  <span class="step-num">4</span> Click <strong>"Save Candidate Record"</strong>.<br>
+  <span class="step-num">5</span> The student is automatically enrolled in all active semester subjects with initial blank marks ready for grading.
+</div>
+
+<h1 class="section-title">8. How Admin Manages Subjects & Course Credits</h1>
+<div class="step-box">
+  <span class="step-num">1</span> Click <strong>Subjects</strong> in the sidebar navigation.<br>
+  <span class="step-num">2</span> View all 7 active engineering course papers.<br>
+  <span class="step-num">3</span> To add a new paper, click <strong>"+ Add Subject"</strong>. Enter Course Title, Course Code (e.g. <code>CSE102</code>), Course Category (Theory / Practical), Maximum Marks (e.g., <code>100</code>), and Credit Weighting (e.g., <code>4</code>).<br>
+  <span class="step-num">4</span> Click <strong>"Save Subject"</strong>. The new course is instantly synced to all student scorecards.
+</div>
+
+<!-- SECTION 9, 10, 11 -->
+<div class="page-break"></div>
+<h1 class="section-title">9. Teacher Dashboard Walkthrough</h1>
+<p>
+  When switching to <strong>Teacher View</strong>, the sidebar is streamlined to focus on teaching responsibilities. The teacher lands on <strong>My Departmental Cohort</strong>, displaying:
+</p>
+<ul>
+  <li><strong>Faculty Profile Banner:</strong> Displays active teacher name, Department, and Authorized Sections.</li>
+  <li><strong>Scoped Performance Metrics:</strong> Total cohort students, evaluated count, pending evaluation tally, and cohort pass rate.</li>
+  <li><strong>Faculty Selector:</strong> Switch between registered faculty accounts to inspect different departmental assignments.</li>
+</ul>
+
+<h1 class="section-title">10. How Teachers Enter & Update Marks</h1>
+<div class="step-box">
+  <span class="step-num">1</span> In Teacher View, locate the candidate row and click the blue <strong>"Grade Marks"</strong> button.<br>
+  <span class="step-num">2</span> The system transitions to the <strong>Marks Entry</strong> register with that student selected.<br>
+  <span class="step-num">3</span> In the <strong>Marks Scored</strong> input column, enter the candidate's marks for each course paper.<br>
+  <span class="step-num">4</span> <strong>Instant Validation:</strong> If you accidentally type a number exceeding the maximum marks (e.g. 105 in a 100-mark paper) or a negative value, the cell border turns red and flags as <code>INVALID</code>.<br>
+  <span class="step-num">5</span> The system automatically displays the percentage, letter grade (e.g., $A^+$, $B$), grade point, and paper status (<span style="color:green; font-weight:bold;">PASS</span> or <span style="color:red; font-weight:bold;">FAIL</span>).<br>
+  <span class="step-num">6</span> Click <strong>"Save Evaluation Record"</strong> to commit the marks.
+</div>
+
+<div class="alert-tip">
+  <strong>Pro-Tip:</strong> Teachers can also use the <strong>Candidate Selector</strong> dropdown at the top of the Marks Entry view to quickly grade consecutive students without leaving the page.
+</div>
+
+<!-- SECTION 12 & 13 -->
+<div class="page-break"></div>
+<h1 class="section-title">11. How Students View Their Results</h1>
+<div class="step-box">
+  <span class="step-num">1</span> Switch to <strong>Student View</strong> via the bottom-left role selector.<br>
+  <span class="step-num">2</span> Select your name from the candidate dropdown to load your personal transcript.<br>
+  <span class="step-num">3</span> Inspect your personal scorecard card showing:
+  <ul>
+    <li>Candidate Profile (Name, Roll Number, Department, Section).</li>
+    <li>Total Marks Scored and Cumulative Percentage.</li>
+    <li>Earned <strong>SGPA</strong> and Overall Letter Grade.</li>
+    <li>Comprehensive course breakdown table with individual grade points.</li>
+  </ul>
+  <span class="step-num">4</span> Click <strong>"Download Official Transcript (PDF)"</strong> to save your certified grade sheet.
+</div>
+
+<h1 class="section-title">12. Understanding Grades, Credits & SGPA</h1>
+<p>
+  Gradely uses the autonomous 10-point Choice-Based Credit System (CBCS):
+</p>
+<table class="manual-table">
+  <thead>
+    <tr>
+      <th>Percentage</th>
+      <th>Letter Grade</th>
+      <th>Grade Point (GP)</th>
+      <th>Status</th>
+      <th>What it Means</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>90% &ndash; 100%</td><td><strong>A+</strong></td><td>10</td><td>PASS</td><td>Outstanding Mastery</td></tr>
+    <tr><td>80% &ndash; 89.99%</td><td><strong>A</strong></td><td>9</td><td>PASS</td><td>Excellent Performance</td></tr>
+    <tr><td>70% &ndash; 79.99%</td><td><strong>B+</strong></td><td>8</td><td>PASS</td><td>Very Good Performance</td></tr>
+    <tr><td>60% &ndash; 69.99%</td><td><strong>B</strong></td><td>7</td><td>PASS</td><td>Good Performance</td></tr>
+    <tr><td>50% &ndash; 59.99%</td><td><strong>C+</strong></td><td>6</td><td>PASS</td><td>Above Average</td></tr>
+    <tr><td>45% &ndash; 49.99%</td><td><strong>C</strong></td><td>5</td><td>PASS</td><td>Average</td></tr>
+    <tr><td>40% &ndash; 44.99%</td><td><strong>D</strong></td><td>4</td><td>PASS</td><td>Marginal Passing Grade</td></tr>
+    <tr><td>&lt; 40%</td><td><strong>F</strong></td><td>0</td><td>FAIL</td><td>Remedial Re-examination Required</td></tr>
+  </tbody>
+</table>
+
+<div class="alert-warning">
+  <strong>Remedial Rule:</strong> If a student earns an <strong>F</strong> in any course, their overall semester result becomes <strong>REMEDIAL (FAIL)</strong> until the backlog is cleared, regardless of high scores in other subjects.
+</div>
+
+<!-- SECTION 14, 15, 16 -->
+<div class="page-break"></div>
+<h1 class="section-title">13. Downloading Reports & Official Registers</h1>
+<p>
+  Gradely provides several institutional export options:
+</p>
+<ul>
+  <li><strong>Individual Student Transcript (PDF):</strong> Available on the Student Portal. Formatted with academic seal, semester credit breakdown, and conferral signatures.</li>
+  <li><strong>Official Class Merit Register (PDF):</strong> Click <strong>"Export Transcripts (PDF)"</strong> in the top header. Generates a comprehensive class tabulation sheet sorting candidates by Rank and SGPA.</li>
+  <li><strong>Candidate Directory (CSV):</strong> In the Student Directory view, click <strong>"Export Directory (CSV)"</strong> to download an Excel-compatible spreadsheet with built-in formula injection sanitization.</li>
+</ul>
+
+<h1 class="section-title">14. Switching Between Light and Dark Mode</h1>
+<p>
+  Gradely includes an integrated theme switcher in the top navigation bar with three options:
+</p>
+<ul>
+  <li><span style="font-weight:bold;">Sun Icon (&Delta;):</span> <strong>Light Mode</strong> &ndash; High-contrast crisp paper aesthetic for bright daylit offices.</li>
+  <li><span style="font-weight:bold;">Moon Icon (O):</span> <strong>Dark Mode</strong> &ndash; Subdued navy/slate palette for low eye strain during evening grading sessions.</li>
+  <li><span style="font-weight:bold;">Monitor Icon ([ ]):</span> <strong>System Default</strong> &ndash; Automatically matches your operating system theme in real-time.</li>
+</ul>
+
+<h1 class="section-title">15. Common Errors & Troubleshooting</h1>
+<table class="manual-table">
+  <thead>
+    <tr>
+      <th>Issue Encountered</th>
+      <th>Probable Cause</th>
+      <th>Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Red border around mark input</strong></td>
+      <td>Score is negative or exceeds the maximum marks for the paper.</td>
+      <td>Enter a valid numerical mark between 0 and the subject's maximum marks.</td>
+    </tr>
+    <tr>
+      <td><strong>Student result says "Pending"</strong></td>
+      <td>One or more subjects have not had marks entered yet.</td>
+      <td>Complete marks entry for all 7 registered subjects to generate final SGPA.</td>
+    </tr>
+    <tr>
+      <td><strong>Cannot see Admin menu links</strong></td>
+      <td>Active user role is set to Teacher or Student.</td>
+      <td>Switch role dropdown in bottom-left sidebar back to <strong>Admin View</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Old data showing after browser restart</strong></td>
+      <td>Browser is reading cached state from previous session.</td>
+      <td>The system auto-migrates to <code>acadex_v2_1_store</code>. If needed, perform a hard refresh (<kbd>Ctrl</kbd> + <kbd>F5</kbd>).</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

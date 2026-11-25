@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gradely - Technical Documentation & System Reference</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+    @bottom-center {
+      content: "Gradely Technical Reference | Page " counter(page);
+      font-size: 8.5pt;
+      font-family: Arial, sans-serif;
+      color: #64748B;
+    }
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1E293B;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  h1.doc-title {
+    font-size: 22pt;
+    color: #12355B;
+    margin-bottom: 5px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  h1.section-title {
+    font-size: 15pt;
+    color: #12355B;
+    border-bottom: 2px solid #E2E8F0;
+    padding-bottom: 5px;
+    margin-top: 1.4em;
+  }
+
+  h2 {
+    font-size: 12pt;
+    color: #0F172A;
+    margin-top: 1.1em;
+  }
+
+  .code-block {
+    background: #0F172A;
+    color: #F8FAFC;
+    padding: 10px 14px;
+    border-radius: 5px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 9pt;
+    line-height: 1.35;
+    overflow-x: auto;
+    margin: 10px 0;
+  }
+
+  .diagram-box {
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 12px 0;
+    font-family: 'Consolas', monospace;
+    font-size: 8.5pt;
+    line-height: 1.3;
+    white-space: pre;
+    color: #1E293B;
+  }
+
+  table.tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 9.5pt;
+  }
+
+  table.tech-table th, table.tech-table td {
+    border: 1px solid #CBD5E1;
+    padding: 6px 9px;
+    text-align: left;
+  }
+
+  table.tech-table th {
+    background: #12355B;
+    color: white;
+  }
+
+  .endpoint-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 8pt;
+    font-family: monospace;
+  }
+  .ep-get { background: #DCFCE7; color: #166534; }
+  .ep-post { background: #DBEAFE; color: #1E40AF; }
+  .ep-put { background: #FEF3C7; color: #92400E; }
+  .ep-delete { background: #FEE2E2; color: #991B1B; }
+</style>
+</head>
+<body>
+
+<div style="text-align: center; border-bottom: 3px solid #12355B; padding-bottom: 20px; margin-bottom: 20px;">
+  <div style="font-size: 10pt; font-weight: bold; color: #64748B; letter-spacing: 1px;">SYSTEM SPECIFICATION & ARCHITECTURE MANUAL</div>
+  <h1 class="doc-title">Gradely &ndash; Technical Documentation</h1>
+  <div style="font-size: 12pt; color: #334155; font-weight: 600;">Autonomous Academic Grade Evaluation & Merit Platform (Acadex 2.0)</div>
+  <div style="font-size: 9.5pt; color: #64748B; margin-top: 5px;">Repository: <code>divyanshchourasiya06-hub/student-grade-evalution</code> &middot; Branch: <code>main</code> &middot; Version 2.1.0</div>
+</div>
+
+<!-- SECTION 1: ARCHITECTURE -->
+<h1 class="section-title">1. Project Architecture & Philosophy</h1>
+<p>
+  Gradely utilizes a <strong>Zero-Dependency Client-Side Reactive Architecture</strong> as its primary production engine. The entire operational application is consolidated within a standalone, self-sufficient file (<code>index.html</code>) powered by pure ES6+ JavaScript, semantic HTML5, and responsive CSS3 design tokens.
+</p>
+<p>
+  <strong>Architectural Motivations:</strong>
+</p>
+<ul>
+  <li><strong>Instant Cold-Start:</strong> Loads in under 15 milliseconds across standard cellular connections with zero backend cold-start delays.</li>
+  <li><strong>Complete Offline Capability:</strong> Can run without an active internet connection on standalone desktop or laptop computers.</li>
+  <li><strong>Zero Server Infrastructure Costs:</strong> Operates entirely within the user's browser client runtime, enabling free static hosting on cloud platforms like Render.</li>
+  <li><strong>Client-Side Cryptographic PDF Generation:</strong> Uses embedded jsPDF modules to compile vector transcripts with custom fonts and seals without requiring server-side Puppeteer or headless Chrome processes.</li>
+  <li><strong>Multi-Tier Extensibility:</strong> For centralized enterprise campuses, the project repository supplies a complete reference backend in Node.js/TypeScript with Prisma ORM and PostgreSQL.</li>
+</ul>
+
+<!-- SECTION 2: FOLDER STRUCTURE -->
+<h1 class="section-title">2. Repository & Folder Structure</h1>
+<div class="code-block">
+student/
+├── index.html            # Primary Production Standalone Web Application (Zero-dependency)
+├── student.html          # Mirrored standalone runnable copy for direct desktop launching
+├── render.yaml           # Infrastructure-as-Code blueprint for Render cloud static hosting
+├── push_to_github.bat    # Automated Windows script for remote GitHub synchronization
+├── README.md             # Project manifesto, calculation formulas, and quickstart guide
+│
+├── documentation/        # Comprehensive Milestone 5 Documentation & Deliverables
+│   ├── Gradely_Project_Report.pdf          # 36-chapter academic submission report
+│   ├── Gradely_User_Manual.pdf             # Step-by-step administrator, faculty & student manual
+│   ├── Gradely_Technical_Documentation.pdf # Complete engineering reference manual (This doc)
+│   ├── Gradely_Viva_Presentation.pptx      # 15-slide PowerPoint deck for viva voce defense
+│   └── Gradely_Viva_Defense_Guide.md       # Presenter script & top 30 viva questions/answers
+│
+├── backend/              # Reference Full-Stack Enterprise Backend
+│   ├── package.json      # Node.js dependencies (Express, Prisma, JWT, Jest)
+│   ├── tsconfig.json     # TypeScript strict compiler configuration
+│   ├── prisma/
+│   │   └── schema.prisma # PostgreSQL relational database schema (3NF)
+│   └── src/
+│       ├── index.ts      # Express REST API server bootstrap
+│       ├── seed.ts       # Database seeder (20 demo students, 7 subjects)
+│       ├── services/     # Pure mathematical grading service (gradingEngine.ts)
+│       ├── routes/       # Express routers (students, subjects, marks, results, users)
+│       └── middleware/   # JWT authentication & error handling middleware
+│
+└── frontend/             # Reference Full-Stack React 18 Application
+    ├── package.json      # React 18, Vite, Tailwind CSS, Zustand, Lucide React
+    ├── vite.config.ts    # Vite bundler configuration
+    └── src/
+        ├── App.tsx       # Root React component with routing
+        ├── pages/        # Modular views (Dashboard, Students, Marks, Results, Users)
+        └── store/        # Global state store (Zustand)
+</div>
+
+<!-- SECTION 3: TECH STACK -->
+<div class="page-break"></div>
+<h1 class="section-title">3. Technology Stack Specification</h1>
+<table class="tech-table">
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Primary Production Layer</th>
+      <th>Full-Stack Reference Layer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Frontend UI</strong></td>
+      <td>Semantic HTML5 + CSS Grid + Flexbox</td>
+      <td>React 18 with Vite + Tailwind CSS</td>
+    </tr>
+    <tr>
+      <td><strong>Language / Runtime</strong></td>
+      <td>Vanilla ES6+ JavaScript (Strict Mode)</td>
+      <td>TypeScript 5.x / Node.js 18+ LTS</td>
+    </tr>
+    <tr>
+      <td><strong>Client Persistence</strong></td>
+      <td>Browser `localStorage` with JSON serialization</td>
+      <td>PostgreSQL 15 relational database</td>
+    </tr>
+    <tr>
+      <td><strong>ORM / Data Layer</strong></td>
+      <td>Custom reactive data manager (`loadState`, `saveState`)</td>
+      <td>Prisma ORM 5.x</td>
+    </tr>
+    <tr>
+      <td><strong>PDF Generation</strong></td>
+      <td>jsPDF (v2.5.1) + jsPDF-AutoTable (v3.5.28) via CDN</td>
+      <td>Server-side PDFKit / Puppeteer</td>
+    </tr>
+    <tr>
+      <td><strong>Theme System</strong></td>
+      <td>CSS Custom Properties (`[data-theme="dark"]`)</td>
+      <td>Tailwind CSS dark mode class variant</td>
+    </tr>
+    <tr>
+      <td><strong>Hosting & CI/CD</strong></td>
+      <td>Render Static Site via `render.yaml`</td>
+      <td>Render Web Service + Managed PostgreSQL</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 4: DATA MODELS & SCHEMA -->
+<h1 class="section-title">4. Database Schema & Data Models</h1>
+<p>
+  The reference enterprise relational schema is defined in <code>backend/prisma/schema.prisma</code>:
+</p>
+
+<div class="code-block">
+model Student {
+  id           String       @id @default(uuid())
+  enrollmentNo String       @unique
+  fullName     String
+  email        String?
+  section      String       @default("CSE-A")
+  department   String       @default("Computer Science and Engineering")
+  marks        Mark[]
+  result       Result?
+  createdAt    DateTime     @default(now())
+}
+
+model Subject {
+  id        String          @id @default(uuid())
+  code      String          @unique
+  title     String
+  credits   Float
+  maxMarks  Int             @default(100)
+  type      SubjectType     @default(THEORY)
+  marks     Mark[]
+  teachers  TeacherSubject[]
+}
+
+model Mark {
+  id          String   @id @default(uuid())
+  studentId   String
+  subjectId   String
+  marksScored Float
+  student     Student  @relation(fields: [studentId], references: [id])
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  @@unique([studentId, subjectId])
+}
+
+model Result {
+  id            String   @id @default(uuid())
+  studentId     String   @unique
+  sgpa          Float
+  totalObtained Float
+  percentage    Float
+  overallGrade  String
+  status        ResultStatus
+  student       Student  @relation(fields: [studentId], references: [id])
+}
+</div>
+
+<!-- SECTION 5: API DOCUMENTATION -->
+<div class="page-break"></div>
+<h1 class="section-title">5. REST API Documentation (Reference Backend)</h1>
+<table class="tech-table">
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Endpoint</th>
+      <th>Auth</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="endpoint-badge ep-get">GET</span></td>
+      <td><code>/api/students</code></td>
+      <td>Admin / Teacher</td>
+      <td>Fetch enrolled students with pagination, search, and section filters.</td>
+    </tr>
+    <tr>
+      <td><span class="endpoint-badge ep-post">POST</span></td>
+      <td><code>/api/students</code></td>
+      <td>Admin</td>
+      <td>Register a new candidate record with unique enrollment validation.</td>
+    </tr>
+    <tr>
+      <td><span class="endpoint-badge ep-get">GET</span></td>
+      <td><code>/api/subjects</code></td>
+      <td>Public</td>
+      <td>List all active semester courses, credit weights, and maximum marks.</td>
+    </tr>
+    <tr>
+      <td><span class="endpoint-badge ep-post">POST</span></td>
+      <td><code>/api/marks</code></td>
+      <td>Admin / Teacher</td>
+      <td>Submit or update marks scores with boundary checks ($0 \le x \le 	ext{max}$).</td>
+    </tr>
+    <tr>
+      <td><span class="endpoint-badge ep-get">GET</span></td>
+      <td><code>/api/results</code></td>
+      <td>Admin / Teacher</td>
+      <td>Retrieve tabulated class merit register with ranks and SGPAs.</td>
+    </tr>
+    <tr>
+      <td><span class="endpoint-badge ep-get">GET</span></td>
+      <td><code>/api/results/:studentId</code></td>
+      <td>Student / Faculty</td>
+      <td>Fetch personal grade sheet and credit breakdown for a candidate.</td>
+    </tr>
+    <tr>
+      <td><span class="endpoint-badge ep-get">GET</span></td>
+      <td><code>/api/analytics/cohort</code></td>
+      <td>Admin</td>
+      <td>Get statistical distributions, subject averages, and pass/fail rates.</td>
+    </tr>
+    <tr>
+      <td><span class="endpoint-badge ep-post">POST</span></td>
+      <td><code>/api/results/publish</code></td>
+      <td>Admin</td>
+      <td>Toggle official semester publication lock and seal issuance.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 6: CALCULATION ALGORITHMS -->
+<h1 class="section-title">6. Mathematical Grading & SGPA Algorithms</h1>
+<p>
+  The grading engine operates as a deterministic pipeline:
+</p>
+
+<h2>Algorithm 1: Credit-Weighted SGPA</h2>
+<div class="code-block">
+Algorithm ComputeSGPA(MarksList, SubjectsList, OrdinanceScale):
+  TotalWeightedPoints = 0
+  TotalCredits = 0
+  FailedPapersCount = 0
+
+  For i = 0 to length(SubjectsList) - 1:
+    Subject = SubjectsList[i]
+    Mark = MarksList[i]
+    CoursePct = (Mark / Subject.MaxMarks) * 100
+    GradePoint = LookupGradePoint(CoursePct, OrdinanceScale)
+    
+    TotalWeightedPoints += (GradePoint * Subject.Credits)
+    TotalCredits += Subject.Credits
+    If GradePoint == 0:
+      FailedPapersCount += 1
+
+  SGPA = TotalWeightedPoints / TotalCredits
+  SemesterStatus = (FailedPapersCount == 0) ? "PASS" : "FAIL"
+  Return (SGPA, SemesterStatus)
+</div>
+
+<h2>Algorithm 2: Cohort Ranking with Tie-Breaking</h2>
+<div class="code-block">
+Algorithm RankCohort(EvaluatedStudents):
+  Sort EvaluatedStudents Descending by (Student.SGPA, Student.AggregatePercentage)
+  
+  CurrentRank = 1
+  For i = 0 to length(EvaluatedStudents) - 1:
+    If i > 0:
+      Prev = EvaluatedStudents[i - 1]
+      Curr = EvaluatedStudents[i]
+      If (Curr.SGPA != Prev.SGPA) OR (Curr.AggregatePct != Prev.AggregatePct):
+        CurrentRank = i + 1
+    EvaluatedStudents[i].Rank = CurrentRank
+  
+  Return EvaluatedStudents
+</div>
+
+<!-- SECTION 7: DEPLOYMENT & LOCAL SETUP -->
+<div class="page-break"></div>
+<h1 class="section-title">7. Local Setup & Production Deployment</h1>
+
+<h2>A. Offline Local Development (Standalone App)</h2>
+<p>
+  To run the standalone production web application locally:
+</p>
+<div class="code-block">
+# 1. Clone the repository
+git clone https://github.com/divyanshchourasiya06-hub/student-grade-evalution.git
+cd student-grade-evalution
+
+# 2. Launch using any lightweight HTTP server
+python -m http.server 8080
+
+# 3. Access in your browser at:
+http://localhost:8080/index.html
+</div>
+
+<h2>B. Production Cloud Deployment on Render</h2>
+<p>
+  Gradely uses Render's Infrastructure-as-Code blueprint system via <code>render.yaml</code>:
+</p>
+<div class="code-block">
+services:
+  - type: web
+    name: gradely-academic-portal
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+</div>
+<p>
+  <strong>Deployment Steps on Render:</strong>
+</p>
+<ol>
+  <li>Sign in to <a href="https://dashboard.render.com">dashboard.render.com</a>.</li>
+  <li>Click <strong>New +</strong> &rarr; <strong>Static Site</strong>.</li>
+  <li>Connect the GitHub repository: <code>divyanshchourasiya06-hub/student-grade-evalution</code>.</li>
+  <li>Set <strong>Branch</strong> to <code>main</code>, <strong>Build Command</strong> to empty, and <strong>Publish Directory</strong> to <code>.</code> (root).</li>
+  <li>Click <strong>Create Static Site</strong>. Render automatically compiles and assigns a permanent HTTPS domain.</li>
+</ol>
+
+<!-- SECTION 8: SECURITY & INTEGRITY -->
+<h1 class="section-title">8. Security, Error Handling & Integrity Measures</h1>
+<ul>
+  <li><strong>CSV Formula Injection Sanitization:</strong> Before generating directory CSV exports, the exporter checks every string. If a cell begins with characters such as <code>=</code>, <code>+</code>, <code>-</code>, or <code>@</code>, a single apostrophe (<code>'</code>) is prepended to prevent arbitrary command execution in spreadsheet applications.</li>
+  <li><strong>Numeric Boundary Clamping:</strong> Client-side input handlers prevent non-numeric entry, negative marks, and scores exceeding course maximums. Invalid inputs trigger immediate red validation outlines and disable SGPA calculation.</li>
+  <li><strong>Safe DOM Injections:</strong> All dynamic candidate names and text nodes are sanitized before injection to prevent Cross-Site Scripting (XSS).</li>
+  <li><strong>Audit Trail Integrity:</strong> State mutations log timestamped entries in a circular buffer tracking the actor, operation, and modified entities.</li>
+</ul>
+
+</body>
+</html>
